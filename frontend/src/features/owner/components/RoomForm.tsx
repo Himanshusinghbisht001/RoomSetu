@@ -24,7 +24,6 @@ import { z } from 'zod';
 import { useCreateRoom, useUpdateRoom } from '../hooks/useOwnerRooms.js';
 import { uploadImages } from '../api/uploadApi.js';
 import type { Room } from '../types.js';
-import { useAuth } from '../../../auth/AuthProvider.js';
 import MembershipCertificateModal from './MembershipCertificateModal.js';
 
 // ── Form schema (images handled separately via state) ─────────────────────────
