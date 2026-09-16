@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "RoomSetu Rooms Phase 3",
+    "description": "Postman collection for RoomSetu Room Management, Dashboard, and Discovery",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Create Room",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Beautiful Single Room\",\n  \"description\": \"A very nice and clean single room with a great view.\",\n  \"rent\": 5000,\n  \"location\": {\n    \"country\": \"India\",\n    \"state\": \"Uttarakhand\",\n    \"city\": \"Nainital\",\n    \"area\": \"Mallital\"\n  },\n  \"roomType\": \"Single\",\n  \"contactNumber\": \"9876543210\",\n  \"facilities\": [\"Wi-Fi\", \"Water\"],\n  \"suitableFor\": [\"Student\"]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms"]
+        }
+      }
+    },
+    {
+      "name": "2. Get Public Rooms",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms"]
+        }
+      }
+    },
+    {
+      "name": "3. Get Room By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/{{roomId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "{{roomId}}"]
+        }
+      }
+    },
+    {
+      "name": "4. Get My Rooms (Owner)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/my",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "my"]
+        }
+      }
+    },
+    {
+      "name": "5. Update Room",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rent\": 5500\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms/{{roomId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "{{roomId}}"]
+        }
+      }
+    },
+    {
+      "name": "6. Update Availability",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"availability\": \"Booked\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms/{{roomId}}/availability",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "{{roomId}}", "availability"]
+        }
+      }
+    },
+    {
+      "name": "7. Soft Delete Room",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/{{roomId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "{{roomId}}"]
+        }
+      }
+    },
+    {
+      "name": "8. Dashboard Summary",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{accessToken}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/dashboard/summary",
+          "host": ["{{baseUrl}}"],
+          "path": ["rooms", "dashboard", "summary"]
+        }
+      }
+    }
+  ]
+}
