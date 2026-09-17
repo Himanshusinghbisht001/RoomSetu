@@ -83,7 +83,7 @@ const _parsed = envSchema.safeParse(process.env);
 if (!_parsed.success) {
   console.error('');
   console.error('[RoomSetu] ❌  Invalid environment configuration:');
-  _parsed.error.issues.forEach((issue: z.ZodIssue) => {
+  _parsed.error.issues.forEach((issue) => {
     console.error(`  • ${issue.path.join('.')}: ${issue.message}`);
   });
   console.error('');
