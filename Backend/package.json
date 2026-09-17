@@ -35,7 +35,7 @@
         "@types/jsonwebtoken": "^9.0.10",
         "@types/morgan": "^1.9.10",
         "@types/multer": "^2.2.0",
-        "@types/node": "^26.4.1",
+        "@types/node": "^26.5.1",
         "@types/nodemailer": "^8.0.1",
         "@types/supertest": "^7.2.1",
         "mongodb-memory-server": "^11.2.0",
