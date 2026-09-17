@@ -626,33 +626,33 @@ select {
   color: #ffffff;
 }
 
-/* Light Mode Navbar Overrides (Solid / Scrolled state) */
-html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .navbar-link {
-  color: #172B3A;
+/* Light Mode Navbar Overrides (Solid / Scrolled / Transparent states) */
+html:not([data-theme="dark"]) .navbar .navbar-link {
+  color: var(--text);
 }
-html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .navbar-link:hover {
-  color: #16B8A6;
-  background-color: #F1FAF8;
+html:not([data-theme="dark"]) .navbar .navbar-link:hover {
+  color: var(--primary);
+  background-color: var(--surface-hover);
 }
-html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .btn-outline {
-  background-color: #FFFFFF;
-  color: #172B3A;
-  border-color: #DCE5EC;
+html:not([data-theme="dark"]) .navbar .btn-outline {
+  background-color: transparent;
+  color: var(--text);
+  border-color: var(--border);
 }
-html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .btn-outline:hover {
-  background-color: #F1FAF8;
-  color: #12304A;
-  border-color: #16B8A6;
+html:not([data-theme="dark"]) .navbar .btn-outline:hover {
+  background-color: var(--surface-hover);
+  color: var(--primary);
+  border-color: var(--primary);
 }
-html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .theme-toggle {
-  background-color: #FFFFFF;
-  color: #172B3A;
-  border-color: #DCE5EC;
+html:not([data-theme="dark"]) .navbar .theme-toggle {
+  background-color: transparent;
+  color: var(--text);
+  border-color: var(--border);
 }
-html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .theme-toggle:hover {
-  background-color: #F1FAF8;
-  color: #12304A;
-  border-color: #16B8A6;
+html:not([data-theme="dark"]) .navbar .theme-toggle:hover {
+  background-color: var(--surface-hover);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .hamburger {
@@ -682,6 +682,12 @@ html:not([data-theme="dark"]) .navbar:not(.navbar-transparent) .theme-toggle:hov
 }
 .navbar.navbar-transparent .hamburger span {
   background-color: rgba(255,255,255,0.9);
+}
+html:not([data-theme="dark"]) .navbar .hamburger {
+  border-color: var(--border);
+}
+html:not([data-theme="dark"]) .navbar .hamburger span {
+  background-color: var(--text);
 }
 .hamburger.open span:nth-child(1) {
   transform: translateY(6px) rotate(45deg);
