@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { Types } from 'mongoose';
 
 // Custom validator for MongoDB ObjectId
-const objectIdValidator = z.string().refine((val) => Types.ObjectId.isValid(val), {
+const objectIdValidator = z.string().refine((val: string) => Types.ObjectId.isValid(val), {
   message: 'Invalid ObjectId',
 });
 
@@ -72,13 +72,13 @@ export const roomQuerySchema = z.object({
     page: z
       .string()
       .optional()
-      .transform(val => (val ? parseInt(val, 10) : 1))
-      .refine(v => v >= 1, { message: 'page must be >= 1' }),
+      .transform((val: string | undefined) => (val ? parseInt(val, 10) : 1))
+      .refine((v: number) => v >= 1, { message: 'page must be >= 1' }),
     limit: z
       .string()
       .optional()
-      .transform(val => (val ? parseInt(val, 10) : 10))
-      .refine(v => v >= 1 && v <= 50, { message: 'limit must be between 1 and 50' }),
+      .transform((val: string | undefined) => (val ? parseInt(val, 10) : 10))
+      .refine((v: number) => v >= 1 && v <= 50, { message: 'limit must be between 1 and 50' }),
     search: z.string().max(100).optional(),
     availability: z.enum(['Available', 'Booked']).optional(),
     roomType: z.enum(['Single', 'Double', 'PG']).optional(),
@@ -101,13 +101,13 @@ export const ownerRoomQuerySchema = z.object({
     page: z
       .string()
       .optional()
-      .transform(val => (val ? parseInt(val, 10) : 1))
-      .refine(v => v >= 1, { message: 'page must be >= 1' }),
+      .transform((val: string | undefined) => (val ? parseInt(val, 10) : 1))
+      .refine((v: number) => v >= 1, { message: 'page must be >= 1' }),
     limit: z
       .string()
       .optional()
-      .transform(val => (val ? parseInt(val, 10) : 10))
-      .refine(v => v >= 1 && v <= 50, { message: 'limit must be between 1 and 50' }),
+      .transform((val: string | undefined) => (val ? parseInt(val, 10) : 10))
+      .refine((v: number) => v >= 1 && v <= 50, { message: 'limit must be between 1 and 50' }),
     availability: z.enum(['Available', 'Booked']).optional(),
     roomType: z.enum(['Single', 'Double', 'PG']).optional(),
     city: z.string().max(100).optional(),
@@ -117,7 +117,7 @@ export const ownerRoomQuerySchema = z.object({
     includeDeleted: z
       .string()
       .optional()
-      .transform(val => val === 'true'),
+      .transform((val: string | undefined) => val === 'true'),
   }),
 });
 

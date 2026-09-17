@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
-import { ZodError } from 'zod';
+import { z } from 'zod';
 import { AppError } from '../utils/AppError.js';
 import { sendError } from '../utils/response.js';
 import { isDev } from '../config/env.js';
@@ -33,9 +33,10 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   // ── 2. Zod validation error ───────────────────────────────────────────────
-  if (err instanceof ZodError) {
+  if (err instanceof z.ZodError) {
+    const zodErr = err as z.ZodError;
     const fields: Record<string, string[]> = {};
-    err.issues.forEach((issue) => {
+    zodErr.issues.forEach((issue: z.core.$ZodIssue) => {
       const field = issue.path.join('.');
       if (!fields[field]) fields[field] = [];
       (fields[field] as string[]).push(issue.message);

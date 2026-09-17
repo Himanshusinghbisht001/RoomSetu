@@ -83,7 +83,7 @@ const _parsed = envSchema.safeParse(process.env);
 if (!_parsed.success) {
   console.error('');
   console.error('[RoomSetu] ❌  Invalid environment configuration:');
-  _parsed.error.issues.forEach((issue) => {
+  _parsed.error.issues.forEach((issue: { path: (string | number)[]; message: string }) => {
     console.error(`  • ${issue.path.join('.')}: ${issue.message}`);
   });
   console.error('');
@@ -107,5 +107,5 @@ export const isTest = env.NODE_ENV === 'test';
  * e.g. "http://localhost:5173,https://roomsetu.in"
  */
 export const allowedOrigins: string[] = env.CORS_ORIGINS.split(',')
-  .map((o) => o.trim())
+  .map((o: string) => o.trim())
   .filter(Boolean);

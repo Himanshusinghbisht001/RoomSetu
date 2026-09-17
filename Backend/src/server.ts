@@ -25,7 +25,7 @@ if (env.SENTRY_DSN) {
     dsn: env.SENTRY_DSN,
     environment: env.NODE_ENV,
     tracesSampleRate: 1.0,
-    beforeSend(event) {
+    beforeSend(event: Sentry.ErrorEvent) {
       if (event.request) {
         // Scrub cookies and sensitive headers
         delete event.request.cookies;

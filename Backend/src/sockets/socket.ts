@@ -14,12 +14,12 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
       methods: ['GET', 'POST'],
       credentials: true,
     },
-  });
+  } as unknown as Partial<import('socket.io').ServerOptions>);
 
   // Apply authentication middleware
   io.use(socketAuth);
 
-  io.on('connection', (socket: Socket) => {
+  io.sockets.on('connection', (socket: Socket) => {
     const authSocket = socket as AuthenticatedSocket;
     const { userId, role } = authSocket.user;
 
@@ -29,7 +29,7 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
       role 
     });
 
-    socket.on('disconnect', (reason) => {
+    socket.on('disconnect', (reason: string) => {
       logger.info('Socket disconnected', { 
         socketId: socket.id, 
         userId, 
@@ -37,7 +37,7 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
       });
     });
     
-    socket.on('error', (err) => {
+    socket.on('error', (err: Error) => {
       logger.error('Socket error', {
         socketId: socket.id,
         userId,
