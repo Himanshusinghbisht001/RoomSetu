@@ -21,7 +21,7 @@
         "mongoose": "^9.9.4",
         "morgan": "^1.12.0",
         "multer": "^2.3.0",
-        "nodemailer": "^10.0.3",
+        "nodemailer": "^10.0.9",
         "socket.io": "^4.8.3",
         "winston": "^3.19.0",
         "zod": "^4.5.4"
