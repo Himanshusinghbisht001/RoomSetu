@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useRoom } from '../features/seeker/hooks/useRooms.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
+import { RoomReviewSection } from '../features/reviews/components/RoomReviewSection.js';
 
 export const RoomDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -311,6 +312,8 @@ export const RoomDetails: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <RoomReviewSection roomId={room._id || id || ''} />
       </main>
 
       <Footer />
