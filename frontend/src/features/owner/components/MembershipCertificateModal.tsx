@@ -39,6 +39,7 @@ export default function MembershipCertificateModal({ onClose }: Props) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="certificate-modal-title"
+        data-theme="light"
         style={{
           width: '100%',
           maxWidth: '920px',
