@@ -108,11 +108,14 @@ export default function Navbar() {
                 Home
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/seeker" className={navLinkClass}>
-                Find Rooms
-              </NavLink>
-            </li>
+            {/* Hide "Find Rooms" for owners — only seekers and guests need it */}
+            {!(isAuthenticated && user?.role === 'owner') && (
+              <li>
+                <NavLink to="/seeker" className={navLinkClass}>
+                  Find Rooms
+                </NavLink>
+              </li>
+            )}
             {isAuthenticated && user?.role === 'owner' && (
               <li>
                 <NavLink to="/owner" className={navLinkClass}>
@@ -180,9 +183,12 @@ export default function Navbar() {
         <NavLink to="/" end className={navLinkClass} onClick={closeMenu}>
           Home
         </NavLink>
-        <NavLink to="/seeker" className={navLinkClass} onClick={closeMenu}>
-          Find Rooms
-        </NavLink>
+        {/* Hide "Find Rooms" for owners — only seekers and guests need it */}
+        {!(isAuthenticated && user?.role === 'owner') && (
+          <NavLink to="/seeker" className={navLinkClass} onClick={closeMenu}>
+            Find Rooms
+          </NavLink>
+        )}
 
         {isAuthenticated && user?.role === 'owner' && (
           <NavLink to="/owner" className={navLinkClass} onClick={closeMenu}>
