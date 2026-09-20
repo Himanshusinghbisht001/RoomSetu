@@ -1884,6 +1884,8 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   left: 0.9rem;
   right: 0.9rem;
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   justify-content: space-between;
   align-items: flex-start;
   z-index: 10;
@@ -1898,6 +1900,8 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   letter-spacing: 0.5px;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .premium-badge-success {
@@ -1918,6 +1922,8 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   font-size: 0.7rem;
   font-weight: 700;
   box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 [data-theme="dark"] .premium-badge-type {

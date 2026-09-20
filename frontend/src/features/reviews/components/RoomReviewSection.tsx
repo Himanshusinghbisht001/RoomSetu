@@ -61,15 +61,6 @@ export const RoomReviewSection: React.FC<RoomReviewSectionProps> = ({ roomId }) 
       </div>
 
       <div className="review-content-wrapper">
-        <ReviewFeed 
-          roomId={roomId}
-          reviews={allReviews}
-          isLoading={isReviewsLoading && page === 1}
-          onLoadMore={handleLoadMore}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetching && page > 1}
-        />
-
         {user?.role === 'seeker' && !hasUserAlreadyReviewed && (
           <div className="review-form-container">
             <ReviewForm
@@ -95,6 +86,15 @@ export const RoomReviewSection: React.FC<RoomReviewSectionProps> = ({ roomId }) 
             <p>Log in as a seeker to write a review.</p>
           </div>
         )}
+
+        <ReviewFeed 
+          roomId={roomId}
+          reviews={allReviews}
+          isLoading={isReviewsLoading && page === 1}
+          onLoadMore={handleLoadMore}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetching && page > 1}
+        />
       </div>
     </section>
   );
