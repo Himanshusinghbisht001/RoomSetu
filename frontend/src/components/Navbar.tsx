@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider.js';
 import { useTheme } from '../providers/ThemeProvider.js';
-import logoSrc from '../assets/logo.png';
+import logoSrc from '../assets/logo.jpg';
 
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();

@@ -533,9 +533,10 @@ select {
   flex-shrink: 0;
 }
 .navbar-logo img {
-  height: 38px;
+  height: 48px;
   width: auto;
   object-fit: contain;
+  border-radius: 6px;
   transition: opacity var(--transition);
 }
 .navbar-logo:hover { text-decoration: none; opacity: 0.85; }
@@ -1413,9 +1414,10 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   margin-bottom: 1.75rem;
 }
 .auth-logo img {
-  height: 64px;
+  height: 80px;
   width: auto;
   object-fit: contain;
+  border-radius: 8px;
 }
 .auth-title {
   font-size: 1.4rem;
@@ -1666,11 +1668,9 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   height: 44px;
   width: auto;
   object-fit: contain;
-  filter: brightness(1.1) drop-shadow(0 1px 3px rgba(0,0,0,0.25));
+  border-radius: 6px;
 }
-[data-theme="dark"] .footer-logo-img {
-  filter: none;
-}
+
 
 .footer-tagline {
   font-size: 1.1rem;

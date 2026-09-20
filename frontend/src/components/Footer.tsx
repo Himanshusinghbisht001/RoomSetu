@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logoSrc from '../assets/logo.png';
+import logoSrc from '../assets/logo.jpg';
 import FeedbackModal from '../features/feedback/FeedbackModal.js';
 import type { FeedbackType } from '../features/feedback/types.js';
 

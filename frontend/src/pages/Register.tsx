@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { register as apiRegister } from '../auth/authApi.js';
-import logoSrc from '../assets/logo.png';
+import logoSrc from '../assets/logo.jpg';
 
 const registerSchema = z
   .object({
