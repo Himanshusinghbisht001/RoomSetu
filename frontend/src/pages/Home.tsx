@@ -6,6 +6,21 @@ import { useRooms, useLocationCounts } from '../features/seeker/hooks/useRooms.j
 import { RoomCard } from '../features/seeker/components/RoomCard.js';
 import { useAuth } from '../auth/AuthProvider.js';
 
+/**
+ * Build-time dynamic discovery of all images in src/assets/Random/.
+ * Vite resolves import.meta.glob at build time — every file matching the
+ * pattern is bundled and gets a content-hashed URL automatically.
+ * To add a new image: drop it into src/assets/Random/ and redeploy.
+ * No code change required.
+ */
+const editorialImageModules = import.meta.glob<{ default: string }>(
+  '../assets/Random/*.jfif',
+  { eager: true },
+);
+const editorialImages: string[] = Object.entries(editorialImageModules)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([, mod]) => mod.default);
+
 /* ── Centralized location → image mapping ────────────────────
    Images are real Nainital photographs sourced from Wikimedia
    Commons under CC BY-SA 4.0 / CC BY 2.0 / Public Domain.
@@ -98,17 +113,8 @@ export default function Home() {
     }
   };
 
-  const editorialImages = [
-    '/Random/img1.jfif',
-    '/Random/img2.jfif',
-    '/Random/img3.jfif',
-    '/Random/img4.jfif',
-    '/Random/img5.jfif',
-    '/Random/img6.jfif',
-    '/Random/img7.jfif',
-    '/Random/img8.jfif',
-    '/Random/img9.jfif',
-  ];
+  // editorialImages is derived at module-load time via import.meta.glob above.
+  // No array needed here.
 
   const [currentEditorialIndex, setCurrentEditorialIndex] = useState(0);
 
@@ -117,7 +123,7 @@ export default function Home() {
       setCurrentEditorialIndex((prev) => (prev + 1) % editorialImages.length);
     }, 1000);
     return () => clearInterval(interval);
-  }, [editorialImages.length]);
+  }, []);
 
   return (
     <div className="home-page">
