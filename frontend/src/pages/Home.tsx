@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import { useRooms, useLocationCounts } from '../features/seeker/hooks/useRooms.js';
 import { RoomCard } from '../features/seeker/components/RoomCard.js';
+import { useAuth } from '../auth/AuthProvider.js';
 
 /* ── Centralized location → image mapping ────────────────────
    Images are real Nainital photographs sourced from Wikimedia
@@ -32,6 +33,8 @@ const FEATURED_LOCATION = '7 Number';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
+  const isOwner = isAuthenticated && user?.role === 'owner';
   const [searchArea, setSearchArea] = useState('');
   const [searchType, setSearchType] = useState('');
   const [searchRent, setSearchRent] = useState('');
@@ -145,59 +148,81 @@ export default function Home() {
             Discover comfortable rooms, PGs and stays that fit your needs.
           </p>
 
-          {/* Search */}
-          <div className="premium-hero-search-wrapper" role="search">
-            <form className="premium-hero-search" onSubmit={handleSearch} aria-label="Room search">
-              <div className="search-field">
-                <label htmlFor="hero-area">Location / Area</label>
-                <input
-                  id="hero-area"
-                  type="text"
-                  placeholder="e.g. Mallital, Tallital"
-                  value={searchArea}
-                  onChange={(e) => setSearchArea(e.target.value)}
-                  autoComplete="off"
-                />
-              </div>
-
-              <div className="search-divider" aria-hidden="true" />
-
-              <div className="search-field">
-                <label htmlFor="hero-type">Room Type</label>
-                <select
-                  id="hero-type"
-                  value={searchType}
-                  onChange={(e) => setSearchType(e.target.value)}
+          {/* Hero CTA — role-based: owner sees Add Room prompt, seeker/guest sees search */}
+          {isOwner ? (
+            /* ── OWNER: Add Your Room CTA ── */
+            <div className="premium-hero-search-wrapper owner-hero-cta" aria-label="List your room">
+              <div className="owner-cta-inner">
+                <div className="owner-cta-text">
+                  <span className="owner-cta-eyebrow">Owner Dashboard</span>
+                  <p className="owner-cta-headline">List your room on RoomSetu</p>
+                  <p className="owner-cta-sub">Reach thousands of seekers in Nainital. Add or manage your listings instantly.</p>
+                </div>
+                <Link
+                  to="/owner"
+                  className="btn btn-primary owner-cta-btn"
+                  id="hero-owner-add-room-btn"
+                  aria-label="Go to owner dashboard to add your room"
                 >
-                  <option value="">Any Type</option>
-                  <option value="Single">Single Room</option>
-                  <option value="Double">Double Room</option>
-                  <option value="PG">PG</option>
-                </select>
+                  + Add Your Room
+                </Link>
               </div>
+            </div>
+          ) : (
+            /* ── SEEKER / GUEST: existing search bar — unchanged ── */
+            <div className="premium-hero-search-wrapper" role="search">
+              <form className="premium-hero-search" onSubmit={handleSearch} aria-label="Room search">
+                <div className="search-field">
+                  <label htmlFor="hero-area">Location / Area</label>
+                  <input
+                    id="hero-area"
+                    type="text"
+                    placeholder="e.g. Mallital, Tallital"
+                    value={searchArea}
+                    onChange={(e) => setSearchArea(e.target.value)}
+                    autoComplete="off"
+                  />
+                </div>
 
-              <div className="search-divider" aria-hidden="true" />
+                <div className="search-divider" aria-hidden="true" />
 
-              <div className="search-field">
-                <label htmlFor="hero-budget">Rent / Budget</label>
-                <select
-                  id="hero-budget"
-                  value={searchRent}
-                  onChange={(e) => setSearchRent(e.target.value)}
-                >
-                  <option value="">Any Budget</option>
-                  <option value="rent_asc">Low to High</option>
-                  <option value="rent_desc">High to Low</option>
-                </select>
-              </div>
+                <div className="search-field">
+                  <label htmlFor="hero-type">Room Type</label>
+                  <select
+                    id="hero-type"
+                    value={searchType}
+                    onChange={(e) => setSearchType(e.target.value)}
+                  >
+                    <option value="">Any Type</option>
+                    <option value="Single">Single Room</option>
+                    <option value="Double">Double Room</option>
+                    <option value="PG">PG</option>
+                  </select>
+                </div>
 
-              <div className="search-btn-wrap">
-                <button type="submit" className="btn btn-accent search-btn" id="hero-search-btn">
-                  Search Rooms
-                </button>
-              </div>
-            </form>
-          </div>
+                <div className="search-divider" aria-hidden="true" />
+
+                <div className="search-field">
+                  <label htmlFor="hero-budget">Rent / Budget</label>
+                  <select
+                    id="hero-budget"
+                    value={searchRent}
+                    onChange={(e) => setSearchRent(e.target.value)}
+                  >
+                    <option value="">Any Budget</option>
+                    <option value="rent_asc">Low to High</option>
+                    <option value="rent_desc">High to Low</option>
+                  </select>
+                </div>
+
+                <div className="search-btn-wrap">
+                  <button type="submit" className="btn btn-accent search-btn" id="hero-search-btn">
+                    Search Rooms
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
 
         {/* Decorative scroll steps */}

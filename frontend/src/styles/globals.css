@@ -2176,6 +2176,81 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   border-color: rgba(37, 61, 81, 0.8);
 }
 
+/* ── Owner Hero CTA ─────────────────────────────────────────
+   Replaces the search bar for authenticated owners.
+   Reuses .premium-hero-search-wrapper for identical
+   width/position/shadow — zero layout shift.
+   ─────────────────────────────────────────────────────────── */
+.owner-hero-cta {
+  /* Override default padding for a more spacious CTA feel */
+  padding: 1.75rem 2rem;
+}
+
+.owner-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.owner-cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.owner-cta-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent, #0ea5e9);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.owner-cta-headline {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.owner-cta-sub {
+  margin: 0;
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.owner-cta-btn {
+  flex-shrink: 0;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border-radius: var(--radius-lg);
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 640px) {
+  .owner-hero-cta {
+    padding: 1.25rem;
+  }
+  .owner-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .owner-cta-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
 .premium-hero-search {
   display: flex;
   gap: 0;
