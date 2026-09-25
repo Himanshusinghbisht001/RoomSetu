@@ -55,6 +55,22 @@ export const OwnerRequestsList: React.FC = () => {
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                   Requested on: {new Date(inquiry.createdAt).toLocaleString()}
                 </div>
+                
+                {(inquiry.fromLocation || inquiry.purpose) && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.5rem', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text)' }}>
+                    {inquiry.purpose && (
+                      <div>
+                        <span style={{ color: 'var(--text-muted)' }}>Purpose:</span> <strong>{inquiry.purpose}</strong>
+                      </div>
+                    )}
+                    {inquiry.fromLocation && (
+                      <div>
+                        <span style={{ color: 'var(--text-muted)' }}>From:</span> <strong>{inquiry.fromLocation}</strong>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {inquiry.message && (
                   <div style={{ marginTop: '0.75rem', padding: '0.75rem', backgroundColor: 'var(--bg-hover)', borderRadius: '6px', fontSize: '0.95rem' }}>
                     "{inquiry.message}"

@@ -268,6 +268,16 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     expect(res.body.success).toBe(true);
     expect(res.body.data.length).toBe(2);
     expect(res.body.pagination.total).toBe(2);
+
+    // Verify response shape and id serialization
+    const firstInquiry = res.body.data[0];
+    expect(firstInquiry).toHaveProperty('id');
+    expect(typeof firstInquiry.id).toBe('string');
+    expect(firstInquiry).not.toHaveProperty('_id');
+    expect(firstInquiry).not.toHaveProperty('__v');
+    expect(firstInquiry.fromLocation).toBe('Mumbai');
+    expect(firstInquiry.purpose).toBe('Student');
+    expect(firstInquiry.status).toBe('Pending');
   });
 
   // ─── 10. Owner cannot access another owner's inquiries ────────────────────
@@ -303,6 +313,16 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.data.length).toBe(1);
+
+    // Verify response shape and id serialization
+    const firstInquiry = res.body.data[0];
+    expect(firstInquiry).toHaveProperty('id');
+    expect(typeof firstInquiry.id).toBe('string');
+    expect(firstInquiry).not.toHaveProperty('_id');
+    expect(firstInquiry).not.toHaveProperty('__v');
+    expect(firstInquiry.fromLocation).toBe('Kolkata');
+    expect(firstInquiry.purpose).toBe('Student');
+    expect(firstInquiry.status).toBe('Pending');
   });
 
   // ─── 12. Seeker cannot fetch another user's inquiries ─────────────────────

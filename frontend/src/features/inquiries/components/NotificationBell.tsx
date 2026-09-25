@@ -12,6 +12,9 @@ interface NotifItem {
   seekerId?: { name?: string } | string;
   roomTitle?: string;
   roomId?: { title?: string } | string;
+  fromLocation?: string;
+  purpose?: string;
+  message?: string;
   status?: string;
   createdAt?: string | Date;
 }
@@ -297,6 +300,31 @@ export const NotificationBell: React.FC = () => {
                       <strong style={{ color: 'var(--text)' }}>{seekerName}</strong> is interested in{' '}
                       <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>"{roomTitle}"</span>
                     </div>
+
+                    {/* Seeker Details */}
+                    {(notif.fromLocation || notif.purpose) && (
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text)', marginBottom: '0.25rem' }}>
+                        {notif.purpose && <span><strong>Purpose:</strong> {notif.purpose}</span>}
+                        {notif.purpose && notif.fromLocation && <span style={{ margin: '0 4px', color: 'var(--text-muted)' }}>•</span>}
+                        {notif.fromLocation && <span><strong>From:</strong> {notif.fromLocation}</span>}
+                      </div>
+                    )}
+
+                    {notif.message && (
+                      <div
+                        style={{
+                          fontSize: '0.78rem',
+                          color: 'var(--text-muted)',
+                          marginBottom: '0.4rem',
+                          fontStyle: 'italic',
+                          backgroundColor: 'var(--bg-hover)',
+                          padding: '0.35rem 0.5rem',
+                          borderRadius: '4px',
+                        }}
+                      >
+                        "{notif.message}"
+                      </div>
+                    )}
 
                     {/* Timestamp */}
                     {notif.createdAt && (

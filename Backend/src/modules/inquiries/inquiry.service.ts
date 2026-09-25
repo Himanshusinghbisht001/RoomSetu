@@ -73,6 +73,9 @@ export const createInquiry = async (
       roomTitle: room.title,
       seekerId,
       seekerName: seeker?.name ?? 'Unknown',
+      fromLocation: inquiry.fromLocation,
+      purpose: inquiry.purpose,
+      message: inquiry.message,
       status: 'Pending',
       createdAt: inquiry.createdAt,
     });
@@ -106,8 +109,15 @@ export const getReceivedInquiries = async (ownerId: string, query: InquiryQuery)
     Inquiry.countDocuments(filter),
   ]);
 
+  const formattedInquiries = inquiries.map((inq: any) => {
+    const formatted = { ...inq, id: inq._id.toString() };
+    delete formatted._id;
+    delete formatted.__v;
+    return formatted;
+  });
+
   return {
-    inquiries,
+    inquiries: formattedInquiries,
     total,
     page,
     limit,
@@ -137,8 +147,15 @@ export const getMyInquiries = async (seekerId: string, query: InquiryQuery) => {
     Inquiry.countDocuments(filter),
   ]);
 
+  const formattedInquiries = inquiries.map((inq: any) => {
+    const formatted = { ...inq, id: inq._id.toString() };
+    delete formatted._id;
+    delete formatted.__v;
+    return formatted;
+  });
+
   return {
-    inquiries,
+    inquiries: formattedInquiries,
     total,
     page,
     limit,
