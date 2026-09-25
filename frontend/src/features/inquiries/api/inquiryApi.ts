@@ -37,4 +37,11 @@ export const inquiryApi = {
     );
     return res.data.data;
   },
+
+  cancelInquiry: async (inquiryId: string): Promise<Inquiry> => {
+    const res = await apiClient.patch<{ success: boolean; data: Inquiry }>(
+      `/inquiries/${inquiryId}/cancel`
+    );
+    return res.data.data;
+  },
 };

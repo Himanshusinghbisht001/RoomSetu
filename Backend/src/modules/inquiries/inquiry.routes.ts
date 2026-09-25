@@ -48,3 +48,11 @@ inquiryRoutes.patch(
   requireRole('owner'),
   inquiryController.rejectInquiry,
 );
+
+// Seeker: cancel a pending inquiry
+inquiryRoutes.patch(
+  '/:inquiryId/cancel',
+  requireAuth,
+  requireRole('seeker'),
+  inquiryController.cancelInquiry,
+);

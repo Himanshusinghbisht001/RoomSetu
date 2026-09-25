@@ -228,9 +228,6 @@ export const RoomDetails: React.FC = () => {
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '0.25rem' }}>
                   per month
                 </div>
-                <div style={{ marginTop: '1rem' }}>
-                  <InterestButton roomId={room._id || id || ''} />
-                </div>
               </div>
             </div>
 
@@ -310,6 +307,8 @@ export const RoomDetails: React.FC = () => {
                     >
                       📞 {room.contactNumber}
                     </a>
+                    
+                    <InterestButton roomId={room._id || id || ''} />
                   </div>
                 )}
               </aside>

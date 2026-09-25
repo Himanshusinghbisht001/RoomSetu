@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../../../auth/AuthProvider.js';
-import { useCreateInquiry, useMyInquiries } from '../hooks/useInquiries.js';
+import { useCreateInquiry, useMyInquiries, useCancelInquiry } from '../hooks/useInquiries.js';
 import type { Inquiry } from '../types.js';
 import { AxiosError } from 'axios';
 
@@ -17,6 +17,7 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
   // Fetch seeker's inquiries to determine button state
   const { data: myInquiriesData, isLoading: isLoadingInquiries } = useMyInquiries(1, 50);
   const createInquiry = useCreateInquiry();
+  const cancelInquiry = useCancelInquiry();
 
   const activeInquiry = useMemo(() => {
     if (!myInquiriesData) return null;
@@ -27,28 +28,48 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
     );
   }, [myInquiriesData, roomId]);
 
-  // If not authenticated, or not a seeker, don't show the button here (or show a prompt)
+  // If not authenticated, or not a seeker, don't show the button here
   if (!isAuthenticated || user?.role !== 'seeker') {
     return null;
   }
 
   if (isLoadingInquiries) {
-    return <button className="btn btn-primary" disabled>Loading...</button>;
+    return <button className="btn btn-outline w-full text-center mt-3" disabled>Loading...</button>;
   }
+
+  const handleCancel = async () => {
+    if (activeInquiry && window.confirm('Are you sure you want to cancel this request?')) {
+      try {
+        await cancelInquiry.mutateAsync(activeInquiry.id);
+      } catch (err) {
+        alert('Failed to cancel request.');
+      }
+    }
+  };
 
   if (activeInquiry) {
     if (activeInquiry.status === 'Pending') {
       return (
-        <button className="btn btn-primary" disabled style={{ opacity: 0.8 }}>
-          Request Sent
-        </button>
+        <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 600 }}>
+            <span aria-hidden="true">✓</span> Request Sent
+          </div>
+          <button 
+            className="btn btn-outline w-full text-center" 
+            onClick={handleCancel}
+            disabled={cancelInquiry.isPending}
+            style={{ borderColor: 'var(--error)', color: 'var(--error)' }}
+          >
+            {cancelInquiry.isPending ? 'Cancelling...' : 'Cancel Request'}
+          </button>
+        </div>
       );
     }
     if (activeInquiry.status === 'Accepted') {
       return (
-        <button className="btn" disabled style={{ backgroundColor: 'var(--success)', color: 'white', opacity: 0.9 }}>
-          Interest Accepted
-        </button>
+        <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 600 }}>
+          <span aria-hidden="true">✓</span> Interest Accepted
+        </div>
       );
     }
   }
@@ -75,7 +96,8 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
   if (!showForm) {
     return (
       <button 
-        className="btn btn-primary"
+        className="btn btn-outline w-full text-center"
+        style={{ marginTop: '0.75rem' }}
         onClick={() => setShowForm(true)}
       >
         I'm Interested
@@ -84,8 +106,8 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
   }
 
   return (
-    <div className="interest-form-card" style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px', marginTop: '1rem' }}>
-      <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Send Interest Request</h3>
+    <div className="interest-form-card" style={{ padding: '0.75rem', border: '1px solid var(--border)', borderRadius: '8px', marginTop: '0.75rem' }}>
+      <h3 style={{ fontSize: '0.95rem', marginBottom: '0.5rem' }}>Send Interest Request</h3>
       <form onSubmit={handleSubmit}>
         <textarea
           className="form-input"

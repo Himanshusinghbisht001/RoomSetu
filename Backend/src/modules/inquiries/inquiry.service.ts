@@ -227,3 +227,29 @@ export const rejectInquiry = async (inquiryId: string, ownerId: string) => {
 
   return inquiry;
 };
+
+/**
+ * Cancel a pending inquiry.
+ * Only the seeker who created the inquiry can perform this action.
+ */
+export const cancelInquiry = async (inquiryId: string, seekerId: string) => {
+  const inquiry = await Inquiry.findOne({ _id: inquiryId, isDeleted: false });
+
+  if (!inquiry) {
+    throw AppError.notFound('Inquiry not found');
+  }
+
+  // Verify ownership
+  if (inquiry.seekerId.toString() !== seekerId) {
+    throw AppError.notFound('Inquiry not found');
+  }
+
+  if (inquiry.status !== 'Pending') {
+    throw AppError.conflict(`Cannot cancel an inquiry that is already ${inquiry.status}`);
+  }
+
+  inquiry.status = 'Cancelled';
+  await inquiry.save();
+
+  return inquiry;
+};

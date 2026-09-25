@@ -56,3 +56,14 @@ export function useRejectInquiry() {
     },
   });
 }
+
+export function useCancelInquiry() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (inquiryId: string) => inquiryApi.cancelInquiry(inquiryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: inquiryKeys.my() });
+    },
+  });
+}

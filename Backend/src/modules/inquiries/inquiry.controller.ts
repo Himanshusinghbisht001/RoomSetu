@@ -121,3 +121,23 @@ export const rejectInquiry = async (req: Request, res: Response, next: NextFunct
     next(error);
   }
 };
+
+/**
+ * PATCH /api/v1/inquiries/:inquiryId/cancel
+ * Cancel a pending inquiry (seeker only).
+ */
+export const cancelInquiry = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const validated = inquiryParamsSchema.parse(req);
+    const seekerId = req.user!.id;
+
+    const inquiry = await inquiryService.cancelInquiry(validated.params.inquiryId, seekerId);
+
+    res.status(200).json({
+      success: true,
+      data: inquiry,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
