@@ -149,13 +149,15 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const res = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({ message: 'I am interested in this room' });
+      .send({ fromLocation: 'Delhi', purpose: 'Student', message: 'I am interested in this room' });
 
     expect(res.status).toBe(201);
     expect(res.body.success).toBe(true);
     expect(res.body.data.status).toBe('Pending');
     expect(res.body.data.roomId).toBe(roomId);
     expect(res.body.data.seekerId).toBe(seeker1Id);
+    expect(res.body.data.fromLocation).toBe('Delhi');
+    expect(res.body.data.purpose).toBe('Student');
   });
 
   // ─── 3. Invalid roomId returns 400 ────────────────────────────────────────
@@ -211,13 +213,13 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({ message: 'First interest' });
+      .send({ fromLocation: 'Mumbai', purpose: 'Working Professional', message: 'First interest' });
 
     // Duplicate
     const res = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({ message: 'Duplicate interest' });
+      .send({ fromLocation: 'Delhi', purpose: 'Student', message: 'Duplicate interest' });
 
     expect(res.status).toBe(409);
   });
@@ -225,15 +227,17 @@ describe('Room Inquiry Feature (Phase 1)', () => {
   // ─── 8. Same seeker can inquire about different rooms ─────────────────────
   it('8. Same seeker can inquire about different rooms', async () => {
     if (!DB_AVAILABLE) return;
+    const payload = { fromLocation: 'Pune', purpose: 'Business' };
+
     const res1 = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send(payload);
 
     const res2 = await request(httpServer)
       .post(`/api/v1/rooms/${room2Id}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send(payload);
 
     expect(res1.status).toBe(201);
     expect(res2.status).toBe(201);
@@ -242,17 +246,19 @@ describe('Room Inquiry Feature (Phase 1)', () => {
   // ─── 9. Owner can fetch received inquiries ────────────────────────────────
   it('9. Owner can fetch received inquiries', async () => {
     if (!DB_AVAILABLE) return;
+    const payload = { fromLocation: 'Hyderabad', purpose: 'Family / Relocation' };
+
     // Seeker1 creates inquiry
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send(payload);
 
     // Seeker2 creates inquiry for the same room
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker2Token}`)
-      .send({});
+      .send(payload);
 
     const res = await request(httpServer)
       .get('/api/v1/inquiries/received')
@@ -271,7 +277,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Bengaluru', purpose: 'Other' });
 
     // Owner2 tries to see them — should see empty (not owner1's data)
     const res = await request(httpServer)
@@ -288,7 +294,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Kolkata', purpose: 'Student' });
 
     const res = await request(httpServer)
       .get('/api/v1/inquiries/my')
@@ -305,7 +311,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Chennai', purpose: 'Working Professional' });
 
     // Seeker2 fetches their own — should only see their own (empty here)
     const res = await request(httpServer)
@@ -322,7 +328,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Jaipur', purpose: 'Other' });
 
     const inquiryId = createRes.body.data.id;
 
@@ -340,7 +346,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Ahmedabad', purpose: 'Business' });
 
     const inquiryId = createRes.body.data.id;
 
@@ -358,7 +364,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Indore', purpose: 'Student' });
 
     const inquiryId = createRes.body.data.id;
 
@@ -376,7 +382,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Lucknow', purpose: 'Other' });
 
     const inquiryId = createRes.body.data.id;
 
@@ -400,7 +406,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Varanasi', purpose: 'Family / Relocation' });
 
     await Inquiry.findByIdAndUpdate(createRes.body.data.id, { isDeleted: true });
 
@@ -451,7 +457,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({ message: 'Interested!' });
+      .send({ fromLocation: 'Nagpur', purpose: 'Student', message: 'Interested!' });
 
     // Wait for the socket event
     const eventData = await eventPromise;
@@ -477,7 +483,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Surat', purpose: 'Working Professional' });
 
     const inquiryId = createRes.body.data.id;
 
@@ -524,10 +530,43 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const res = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Mysore', purpose: 'Student' });
 
     expect(res.status).toBe(201);
     expect(res.body.data.message).toBeUndefined();
+  });
+
+  // ─── Missing fromLocation returns 400 ─────────────────────────────────────
+  it('should return 400 when fromLocation is missing', async () => {
+    if (!DB_AVAILABLE) return;
+    const res = await request(httpServer)
+      .post(`/api/v1/rooms/${roomId}/inquiries`)
+      .set('Authorization', `Bearer ${seeker1Token}`)
+      .send({ purpose: 'Student' });
+
+    expect(res.status).toBe(400);
+  });
+
+  // ─── Missing purpose returns 400 ──────────────────────────────────────────
+  it('should return 400 when purpose is missing', async () => {
+    if (!DB_AVAILABLE) return;
+    const res = await request(httpServer)
+      .post(`/api/v1/rooms/${roomId}/inquiries`)
+      .set('Authorization', `Bearer ${seeker1Token}`)
+      .send({ fromLocation: 'Delhi' });
+
+    expect(res.status).toBe(400);
+  });
+
+  // ─── Invalid purpose value returns 400 ────────────────────────────────────
+  it('should return 400 when purpose is an invalid value', async () => {
+    if (!DB_AVAILABLE) return;
+    const res = await request(httpServer)
+      .post(`/api/v1/rooms/${roomId}/inquiries`)
+      .set('Authorization', `Bearer ${seeker1Token}`)
+      .send({ fromLocation: 'Delhi', purpose: 'Alien' });
+
+    expect(res.status).toBe(400);
   });
 
   // ─── Empty trimmed message rejected ───────────────────────────────────────
@@ -536,7 +575,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const res = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({ message: '   ' });
+      .send({ fromLocation: 'Delhi', purpose: 'Student', message: '   ' });
 
     expect(res.status).toBe(400);
   });
@@ -547,7 +586,7 @@ describe('Room Inquiry Feature (Phase 1)', () => {
     const createRes = await request(httpServer)
       .post(`/api/v1/rooms/${roomId}/inquiries`)
       .set('Authorization', `Bearer ${seeker1Token}`)
-      .send({});
+      .send({ fromLocation: 'Chandigarh', purpose: 'Other' });
 
     const inquiryId = createRes.body.data.id;
 

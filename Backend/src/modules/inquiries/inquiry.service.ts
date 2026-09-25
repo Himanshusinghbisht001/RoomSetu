@@ -54,6 +54,8 @@ export const createInquiry = async (
     roomId: new Types.ObjectId(roomId),
     roomOwnerId: room.ownerId,
     seekerId: new Types.ObjectId(seekerId),
+    fromLocation: data.fromLocation,
+    purpose: data.purpose,
     ...(data.message ? { message: data.message } : {}),
     status: 'Pending',
   });

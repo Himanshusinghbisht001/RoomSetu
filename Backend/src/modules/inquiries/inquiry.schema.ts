@@ -13,6 +13,15 @@ export const createInquirySchema = z.object({
     roomId: objectIdValidator,
   }),
   body: z.object({
+    fromLocation: z
+      .string({ message: 'fromLocation is required' })
+      .trim()
+      .min(1, 'fromLocation cannot be empty')
+      .max(100, 'fromLocation is too long (max 100 characters)'),
+    purpose: z.enum(
+      ['Student', 'Working Professional', 'Business', 'Family / Relocation', 'Other'],
+      { message: 'Invalid purpose value' }
+    ),
     message: z
       .string()
       .trim()
@@ -23,6 +32,7 @@ export const createInquirySchema = z.object({
 });
 
 export type CreateInquiryInput = z.infer<typeof createInquirySchema>['body'];
+
 
 // ── Inquiry ID Param ────────────────────────────────────────────────────────────
 

@@ -9,10 +9,21 @@ export const ACTIVE_STATUSES = ['Pending', 'Accepted'] as const;
 export const INQUIRY_STATUSES = ['Pending', 'Accepted', 'Rejected', 'Cancelled'] as const;
 export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
 
+export const PURPOSE_OPTIONS = [
+  'Student',
+  'Working Professional',
+  'Business',
+  'Family / Relocation',
+  'Other',
+] as const;
+export type InquiryPurpose = (typeof PURPOSE_OPTIONS)[number];
+
 export interface IInquiry extends Document {
   roomId: Types.ObjectId;
   roomOwnerId: Types.ObjectId;
   seekerId: Types.ObjectId;
+  fromLocation: string;
+  purpose: InquiryPurpose;
   message?: string;
   status: InquiryStatus;
   isDeleted: boolean;
@@ -35,6 +46,16 @@ const inquirySchema = new Schema<IInquiry>(
     seekerId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
+    },
+    fromLocation: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    purpose: {
+      type: String,
+      enum: PURPOSE_OPTIONS,
       required: true,
     },
     message: {

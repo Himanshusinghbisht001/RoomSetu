@@ -1,5 +1,20 @@
 export type InquiryStatus = 'Pending' | 'Accepted' | 'Rejected' | 'Cancelled';
 
+export type InquiryPurpose =
+  | 'Student'
+  | 'Working Professional'
+  | 'Business'
+  | 'Family / Relocation'
+  | 'Other';
+
+export const PURPOSE_OPTIONS: InquiryPurpose[] = [
+  'Student',
+  'Working Professional',
+  'Business',
+  'Family / Relocation',
+  'Other',
+];
+
 export interface Inquiry {
   id: string;
   roomId: {
@@ -11,6 +26,8 @@ export interface Inquiry {
     _id: string;
     name: string;
   } | string;
+  fromLocation: string;
+  purpose: InquiryPurpose;
   message?: string;
   status: InquiryStatus;
   isDeleted: boolean;
@@ -30,5 +47,7 @@ export interface PaginatedInquiries {
 }
 
 export interface CreateInquiryInput {
+  fromLocation: string;
+  purpose: InquiryPurpose;
   message?: string;
 }
