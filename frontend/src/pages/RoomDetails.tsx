@@ -4,6 +4,7 @@ import { useRoom } from '../features/seeker/hooks/useRooms.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import { RoomReviewSection } from '../features/reviews/components/RoomReviewSection.js';
+import { InterestButton } from '../features/inquiries/components/InterestButton.js';
 
 export const RoomDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -226,6 +227,9 @@ export const RoomDetails: React.FC = () => {
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '0.25rem' }}>
                   per month
+                </div>
+                <div style={{ marginTop: '1rem' }}>
+                  <InterestButton roomId={room._id || id || ''} />
                 </div>
               </div>
             </div>

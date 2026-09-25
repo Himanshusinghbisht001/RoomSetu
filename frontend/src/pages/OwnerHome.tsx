@@ -11,6 +11,7 @@ import OwnerRoomList from '../features/owner/components/OwnerRoomList.js';
 import RoomFilters from '../features/owner/components/RoomFilters.js';
 import RoomForm from '../features/owner/components/RoomForm.js';
 import MembershipCertificateModal from '../features/owner/components/MembershipCertificateModal.js';
+import { OwnerRequestsList } from '../features/inquiries/components/OwnerRequestsList.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 
@@ -101,6 +102,14 @@ export default function OwnerHome() {
             totalPages={data?.pagination?.pages || 1}
             onPageChange={handlePageChange}
           />
+        </section>
+
+        {/* Room Requests */}
+        <section className="dashboard-section" aria-label="Room Requests" style={{ marginTop: '2rem' }}>
+          <div className="section-header">
+            <h2>Room Requests</h2>
+          </div>
+          <OwnerRequestsList />
         </section>
       </main>
 

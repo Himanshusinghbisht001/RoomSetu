@@ -23,6 +23,9 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
     const authSocket = socket as AuthenticatedSocket;
     const { userId, role } = authSocket.user;
 
+    // Join a user-specific room for targeted notifications
+    void socket.join(`user:${userId}`);
+
     logger.info('Socket connected', { 
       socketId: socket.id, 
       userId, 

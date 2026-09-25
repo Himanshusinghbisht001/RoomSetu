@@ -16,6 +16,7 @@ import { sessionRoutes } from './modules/auth/session.routes.js';
 import { uploadRoutes } from './modules/uploads/upload.routes.js';
 import { feedbackRoutes } from './modules/feedback/feedback.routes.js';
 import { reviewRoomRoutes, reviewRoutes } from './modules/reviews/review.routes.js';
+import { inquiryRoomRoutes, inquiryRoutes } from './modules/inquiries/inquiry.routes.js';
 import * as Sentry from '@sentry/node';
 
 /**
@@ -138,9 +139,11 @@ export function createApp(): Application {
   // Specific room review routes must be mounted before the general roomRoutes, 
   // so /:roomId/reviews isn't swallowed by /:id in roomRoutes.
   app.use('/api/v1/rooms/:roomId/reviews', reviewRoomRoutes);
+  app.use('/api/v1/rooms/:roomId/inquiries', inquiryRoomRoutes);
   app.use('/api/v1/rooms', roomRoutes);
   
   app.use('/api/v1/reviews', reviewRoutes);
+  app.use('/api/v1/inquiries', inquiryRoutes);
   app.use('/api/v1/uploads', uploadRoutes);
   app.use('/api/v1/feedback', feedbackRoutes);
 

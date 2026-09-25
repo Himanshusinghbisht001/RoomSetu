@@ -15,6 +15,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider.js';
 import { useTheme } from '../providers/ThemeProvider.js';
+import { NotificationBell } from '../features/inquiries/components/NotificationBell.js';
+import { SeekerNotificationListener } from '../features/inquiries/components/SeekerNotificationListener.js';
 import logoSrc from '../assets/logo.jpg';
 
 export default function Navbar() {
@@ -137,6 +139,8 @@ export default function Navbar() {
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
 
+          <NotificationBell />
+
           {isAuthenticated ? (
             <button
               className="btn btn-outline btn-sm"
@@ -221,6 +225,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
+      <SeekerNotificationListener />
     </header>
   );
 }
