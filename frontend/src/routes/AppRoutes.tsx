@@ -10,6 +10,7 @@ import NotFound from '../pages/NotFound.js';
 import OwnerHome from '../pages/OwnerHome.js';
 import { SeekerHome } from '../pages/SeekerHome.js';
 import { RoomDetails } from '../pages/RoomDetails.js';
+import ChatPage from '../pages/ChatPage.js';
 
 export default function AppRoutes() {
   return (
@@ -20,6 +21,16 @@ export default function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/403" element={<Forbidden />} />
       <Route path="*" element={<NotFound />} />
+
+      {/* Shared Protected Routes */}
+      <Route
+        path="/chat/:inquiryId"
+        element={
+          <RequireAuth>
+            <ChatPage />
+          </RequireAuth>
+        }
+      />
 
       {/* Owner Protected Routes */}
       <Route

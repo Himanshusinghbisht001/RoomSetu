@@ -68,14 +68,35 @@ export const NotificationBell: React.FC = () => {
   // Seed initial notifications from server on mount / refetch
   useEffect(() => {
     if (isOwner && data?.data) {
-      const pending = data.data.filter((inq) => inq.status === 'Pending');
-      setNotifications(pending as NotifItem[]);
-      // Initialise item states from server data
-      const initial: Record<string, ItemActionState> = {};
-      (data.data as NotifItem[]).forEach((inq, idx) => {
-        initial[getKey(inq, idx)] = getInitialItemStatus(inq);
+      setItemStates((prevStates) => {
+        const nextStates = { ...prevStates };
+        
+        (data.data as NotifItem[]).forEach((inq, idx) => {
+          const key = getKey(inq, idx);
+          // Preserve local terminal states during refetches
+          if (nextStates[key] !== 'accepted' && nextStates[key] !== 'rejected') {
+            nextStates[key] = getInitialItemStatus(inq);
+          }
+        });
+
+        setNotifications((prevNotifs) => {
+          const serverKeys = new Set((data.data as NotifItem[]).map((inq, idx) => getKey(inq, idx)));
+          
+          // Keep socket notifications that aren't yet in the server response
+          const localOnly = prevNotifs.filter((n, idx) => !serverKeys.has(getKey(n, idx)));
+          
+          // Keep server items that are Pending OR have a resolved local terminal state
+          const serverNotifs = (data.data as NotifItem[]).filter((inq, idx) => {
+            const key = getKey(inq, idx);
+            const state = nextStates[key];
+            return inq.status === 'Pending' || state === 'accepted' || state === 'rejected';
+          });
+          
+          return [...localOnly, ...serverNotifs];
+        });
+
+        return nextStates;
       });
-      setItemStates(initial);
     }
   }, [data, isOwner]);
 
