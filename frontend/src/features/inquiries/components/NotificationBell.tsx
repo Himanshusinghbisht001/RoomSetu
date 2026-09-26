@@ -356,18 +356,41 @@ export const NotificationBell: React.FC = () => {
 
                     {/* Action area */}
                     {state === 'accepted' ? (
-                      <div
-                        style={{
-                          fontSize: '0.82rem',
-                          fontWeight: 600,
-                          color: 'var(--success)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                          padding: '0.35rem 0',
-                        }}
-                      >
-                        ✓ Interest Accepted
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.2rem' }}>
+                        <div
+                          style={{
+                            fontSize: '0.82rem',
+                            fontWeight: 600,
+                            color: 'var(--success)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            padding: '0.35rem 0',
+                          }}
+                        >
+                          ✓ Interest Accepted
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsOpen(false);
+                            const id = getInquiryId(notif);
+                            if (id) navigate(`/chat/${id}`);
+                          }}
+                          style={{
+                            padding: '0.3rem 0.7rem',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
+                            borderRadius: 'var(--radius-md)',
+                            border: '1px solid var(--accent)',
+                            backgroundColor: 'var(--accent)',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            transition: 'all var(--transition)',
+                          }}
+                        >
+                          Go to Chat
+                        </button>
                       </div>
                     ) : state === 'rejected' ? (
                       <div

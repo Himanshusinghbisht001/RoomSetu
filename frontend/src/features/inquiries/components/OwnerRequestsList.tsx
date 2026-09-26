@@ -1,5 +1,6 @@
 import React from 'react';
 import { useReceivedInquiries, useAcceptInquiry, useRejectInquiry } from '../hooks/useInquiries.js';
+import { Link } from 'react-router-dom';
 
 export const OwnerRequestsList: React.FC = () => {
   const { data, isLoading, isError, refetch } = useReceivedInquiries(1, 10);
@@ -80,8 +81,20 @@ export const OwnerRequestsList: React.FC = () => {
               
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
                 <span className={`badge ${inquiry.status === 'Pending' ? 'badge-warning' : inquiry.status === 'Accepted' ? 'badge-success' : 'badge-error'}`}>
-                  {inquiry.status}
+                  {inquiry.status === 'Accepted' ? '✓ Interest Accepted' : inquiry.status}
                 </span>
+
+                {inquiry.status === 'Accepted' && (
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <Link 
+                      to={`/chat/${inquiry.id}`}
+                      className="btn btn-primary btn-sm"
+                      style={{ textDecoration: 'none', display: 'inline-block' }}
+                    >
+                      Go to Chat
+                    </Link>
+                  </div>
+                )}
 
                 {inquiry.status === 'Pending' && (
                   <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
