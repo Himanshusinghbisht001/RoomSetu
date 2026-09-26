@@ -60,6 +60,7 @@ export function useChatMessages(inquiryId: string) {
  */
 export function useSendMessage(inquiryId: string) {
   const socket = useSocket();
+  const queryClient = useQueryClient();
 
   const sendMessage = useCallback(
     (content: string): Promise<void> => {
@@ -67,32 +68,42 @@ export function useSendMessage(inquiryId: string) {
       if (!trimmed) return Promise.resolve();
 
       return new Promise((resolve, reject) => {
-        // Use a one-shot chat:error listener as the failure signal.
-        // Socket.io v4 does not provide acknowledgement by default; we resolve
-        // optimistically after emit and reject on a chat:error received within
-        // a short window.
         const TIMEOUT_MS = 5000;
-
-        const onError = (err: { message: string }) => {
-          clearTimeout(timer);
-          reject(new Error(err.message ?? 'Failed to send message'));
-        };
+        let isDone = false;
 
         const timer = setTimeout(() => {
-          socket.off('chat:error', onError);
-          resolve(); // no error within window → assume delivered
+          if (isDone) return;
+          isDone = true;
+          reject(new Error('Request timeout'));
         }, TIMEOUT_MS);
 
-        socket.once('chat:error', (err: { message: string }) => {
-          clearTimeout(timer);
-          socket.off('chat:error', onError);
-          reject(new Error(err.message ?? 'Failed to send message'));
-        });
+        socket.emit(
+          'chat:message:send',
+          { inquiryId, content: trimmed },
+          (response?: { success: boolean; data?: ChatMessage; error?: string }) => {
+            if (isDone) return;
+            isDone = true;
+            clearTimeout(timer);
 
-        socket.emit('chat:message:send', { inquiryId, content: trimmed });
+            if (response?.success && response.data) {
+              // Append to cache to render immediately
+              queryClient.setQueryData<ChatMessage[]>(
+                chatKeys.messages(inquiryId),
+                (prev) => {
+                  const existing = prev ?? [];
+                  if (existing.some((m) => m.id === response.data!.id)) return existing;
+                  return [...existing, response.data!];
+                }
+              );
+              resolve();
+            } else {
+              reject(new Error(response?.error ?? 'Failed to send message'));
+            }
+          }
+        );
       });
     },
-    [inquiryId, socket]
+    [inquiryId, socket, queryClient]
   );
 
   return { sendMessage };

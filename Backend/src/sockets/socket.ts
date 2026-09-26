@@ -38,23 +38,29 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
     // Client emits: { inquiryId: string, content: string }
     // Server persists via chatService (same auth rules as REST) then emits
     // chat:message:new to the recipient's private room only.
-    socket.on('chat:message:send', async (payload: unknown) => {
+    socket.on('chat:message:send', async (payload: unknown, ack?: (response: unknown) => void) => {
       try {
         // Safely extract and validate the payload fields
         if (!payload || typeof payload !== 'object') {
-          socket.emit('chat:error', { message: 'Invalid payload' });
+          const errorMsg = 'Invalid payload';
+          if (typeof ack === 'function') ack({ success: false, error: errorMsg });
+          else socket.emit('chat:error', { message: errorMsg });
           return;
         }
 
         const { inquiryId, content } = payload as Record<string, unknown>;
 
         if (typeof inquiryId !== 'string' || !inquiryId.trim()) {
-          socket.emit('chat:error', { message: 'inquiryId is required' });
+          const errorMsg = 'inquiryId is required';
+          if (typeof ack === 'function') ack({ success: false, error: errorMsg });
+          else socket.emit('chat:error', { message: errorMsg });
           return;
         }
 
         if (typeof content !== 'string' || !content.trim()) {
-          socket.emit('chat:error', { message: 'content is required' });
+          const errorMsg = 'content is required';
+          if (typeof ack === 'function') ack({ success: false, error: errorMsg });
+          else socket.emit('chat:error', { message: errorMsg });
           return;
         }
 
@@ -68,8 +74,9 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
         // Determine recipient from the inquiry document (never from client)
         const inquiry = await Inquiry.findById(inquiryId.trim()).lean();
         if (!inquiry) {
-          // chatService already threw if missing, but guard defensively
-          socket.emit('chat:error', { message: 'Inquiry not found' });
+          const errorMsg = 'Inquiry not found';
+          if (typeof ack === 'function') ack({ success: false, error: errorMsg });
+          else socket.emit('chat:error', { message: errorMsg });
           return;
         }
 
@@ -90,6 +97,10 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
           recipientId,
           messageId: serialized.id,
         });
+
+        if (typeof ack === 'function') {
+          ack({ success: true, data: serialized });
+        }
       } catch (err: unknown) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to send message';
         logger.warn('chat:message:send failed', {
@@ -97,7 +108,11 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
           userId,
           error: errorMessage,
         });
-        socket.emit('chat:error', { message: errorMessage });
+        if (typeof ack === 'function') {
+          ack({ success: false, error: errorMessage });
+        } else {
+          socket.emit('chat:error', { message: errorMessage });
+        }
       }
     });
     // ── End chat handler ──────────────────────────────────────────────────────

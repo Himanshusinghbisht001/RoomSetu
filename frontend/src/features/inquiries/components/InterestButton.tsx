@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../../auth/AuthProvider.js';
 import { useCreateInquiry, useMyInquiries, useCancelInquiry } from '../hooks/useInquiries.js';
 import type { Inquiry, InquiryPurpose } from '../types.js';
@@ -189,19 +190,27 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
     }
     if (activeInquiry.status === 'Accepted') {
       return (
-        <div
-          style={{
-            marginTop: '0.75rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.5rem',
-            color: 'var(--success)',
-            fontWeight: 600,
-            fontSize: '0.9rem',
-          }}
-        >
-          <span aria-hidden="true">✓</span> Interest Accepted
+        <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              color: 'var(--success)',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+            }}
+          >
+            <span aria-hidden="true">✓</span> Interest Accepted
+          </div>
+          <Link
+            to={`/chat/${activeInquiry.id}`}
+            className="btn btn-outline w-full text-center"
+            style={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}
+          >
+            💬 Chat with Owner
+          </Link>
         </div>
       );
     }
