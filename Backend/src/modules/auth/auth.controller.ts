@@ -19,12 +19,18 @@ export const authLimiter = rateLimit({
 
 const COOKIE_NAME = 'roomsetu_refresh';
 
+// Cross-site requests (Vercel frontend → Render backend) require sameSite: 'none'.
+// 'none' mandates secure: true (HTTPS), which isProd already enforces.
+// Development uses 'lax' which is sufficient for same-origin localhost requests.
+const COOKIE_SAMESITE: 'none' | 'lax' = isProd ? 'none' : 'lax';
+
 const setRefreshCookie = (res: Response, token: string) => {
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
     secure: isProd,
-    sameSite: 'strict',
+    sameSite: COOKIE_SAMESITE,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+    path: '/',
   });
 };
 
@@ -32,8 +38,9 @@ const clearRefreshCookie = (res: Response) => {
   res.cookie(COOKIE_NAME, '', {
     httpOnly: true,
     secure: isProd,
-    sameSite: 'strict',
+    sameSite: COOKIE_SAMESITE,
     expires: new Date(0),
+    path: '/',
   });
 };
 
