@@ -5,6 +5,8 @@ import { User } from '../users/user.model.js';
 import { AppError } from '../../utils/AppError.js';
 import { getIO } from '../../sockets/socket.js';
 import { CreateInquiryInput, InquiryQuery } from './inquiry.schema.js';
+import { sendPushToUser } from '../notifications/push.service.js';
+import { logger } from '../../utils/logger.js';
 
 /**
  * Create a new room interest inquiry.
@@ -81,6 +83,22 @@ export const createInquiry = async (
     });
   } catch {
     // Socket notification is best-effort — don't fail the request
+  }
+
+  // 8. Send Web Push notification to the room owner (best-effort)
+  try {
+    await sendPushToUser(room.ownerId.toString(), {
+      title: 'New Interest Request',
+      body: `${seeker?.name ?? 'Someone'} is interested in your room`,
+      url: '/owner',
+      tag: `interest-new-${inquiry._id.toString()}`,
+    });
+  } catch (err) {
+    logger.warn('[Web Push] Failed to send new-interest push to owner', {
+      ownerId: room.ownerId.toString(),
+      inquiryId: inquiry._id.toString(),
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 
   return inquiry;
@@ -202,6 +220,22 @@ export const acceptInquiry = async (inquiryId: string, ownerId: string) => {
     // Socket notification is best-effort
   }
 
+  // Send Web Push notification to the seeker (best-effort)
+  try {
+    await sendPushToUser(inquiry.seekerId.toString(), {
+      title: 'Interest Accepted',
+      body: 'Your interest request has been accepted by the owner',
+      url: `/chat/${inquiry._id.toString()}`,
+      tag: `interest-accepted-${inquiry._id.toString()}`,
+    });
+  } catch (err) {
+    logger.warn('[Web Push] Failed to send accept push to seeker', {
+      seekerId: inquiry.seekerId.toString(),
+      inquiryId: inquiry._id.toString(),
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+
   return inquiry;
 };
 
@@ -242,6 +276,22 @@ export const rejectInquiry = async (inquiryId: string, ownerId: string) => {
     });
   } catch {
     // Socket notification is best-effort
+  }
+
+  // Send Web Push notification to the seeker (best-effort)
+  try {
+    await sendPushToUser(inquiry.seekerId.toString(), {
+      title: 'Interest Request Rejected',
+      body: 'Your interest request was rejected by the owner',
+      url: '/',
+      tag: `interest-rejected-${inquiry._id.toString()}`,
+    });
+  } catch (err) {
+    logger.warn('[Web Push] Failed to send reject push to seeker', {
+      seekerId: inquiry.seekerId.toString(),
+      inquiryId: inquiry._id.toString(),
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 
   return inquiry;

@@ -6,6 +6,7 @@ import { socketAuth } from './socketAuth.js';
 import { AuthenticatedSocket } from './socket.types.js';
 import { chatService } from '../modules/chat/chat.service.js';
 import { Inquiry } from '../modules/inquiries/inquiry.model.js';
+import { sendPushToUser } from '../modules/notifications/push.service.js';
 
 let io: Server;
 
@@ -97,6 +98,30 @@ export const initSocketServer = (httpServer: HttpServer): Server => {
           recipientId,
           messageId: serialized.id,
         });
+
+        // ── Web Push (best-effort) ────────────────────────────────────────────
+        // Send ONLY to the recipient — never to the sender.
+        // Push failure must never affect the socket response.
+        try {
+          const isOwnerSending = inquiry.roomOwnerId.toString() === userId;
+          const pushBody = isOwnerSending
+            ? 'You have a new message from the room owner'
+            : 'You have a new message from a room seeker';
+
+          await sendPushToUser(recipientId, {
+            title: 'New Message',
+            body: pushBody,
+            url: `/chat/${inquiryId.trim()}`,
+            tag: `chat-${inquiryId.trim()}`,
+          });
+        } catch (pushErr) {
+          logger.warn('[Web Push] Failed to send chat push notification', {
+            inquiryId: inquiryId.trim(),
+            recipientId,
+            error: pushErr instanceof Error ? pushErr.message : String(pushErr),
+          });
+        }
+        // ── End Web Push ──────────────────────────────────────────────────────
 
         if (typeof ack === 'function') {
           ack({ success: true, data: serialized });
