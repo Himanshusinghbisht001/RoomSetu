@@ -214,21 +214,7 @@ export const NotificationBell: React.FC = () => {
         <div
           role="menu"
           aria-label="Notifications"
-          style={{
-            position: 'absolute',
-            top: 'calc(100% + 8px)',
-            right: 0,
-            width: 'min(360px, calc(100vw - 1rem))',
-            /* ── Opaque surface — the key fix ── */
-            backgroundColor: 'var(--surface-elevated)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-lg)',
-            zIndex: 9000,
-            overflow: 'hidden',
-            /* prevent any inherited opacity leaking */
-            opacity: 1,
-          }}
+          className="notification-dropdown"
         >
           {/* Header */}
           <div
@@ -318,14 +304,14 @@ export const NotificationBell: React.FC = () => {
                     </div>
 
                     {/* Body */}
-                    <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '0.25rem', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
                       <strong style={{ color: 'var(--text)' }}>{seekerName}</strong> is interested in{' '}
                       <span style={{ color: 'var(--accent)', fontStyle: 'italic' }}>"{roomTitle}"</span>
                     </div>
 
                     {/* Seeker Details */}
                     {(notif.fromLocation || notif.purpose) && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text)', marginBottom: '0.25rem' }}>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text)', marginBottom: '0.25rem', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
                         {notif.purpose && <span><strong>Purpose:</strong> {notif.purpose}</span>}
                         {notif.purpose && notif.fromLocation && <span style={{ margin: '0 4px', color: 'var(--text-muted)' }}>•</span>}
                         {notif.fromLocation && <span><strong>From:</strong> {notif.fromLocation}</span>}
@@ -342,6 +328,8 @@ export const NotificationBell: React.FC = () => {
                           backgroundColor: 'var(--bg-hover)',
                           padding: '0.35rem 0.5rem',
                           borderRadius: '4px',
+                          overflowWrap: 'anywhere',
+                          wordBreak: 'break-word',
                         }}
                       >
                         "{notif.message}"

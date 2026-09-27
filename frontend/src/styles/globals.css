@@ -3433,3 +3433,28 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   border-radius: 50%;
   animation: chatSpin 0.8s linear infinite;
 }
+
+/* ── Notification Dropdown ── */
+.notification-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 360px;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 9000;
+  overflow: hidden;
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .notification-dropdown {
+    position: fixed;
+    top: 64px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+}
