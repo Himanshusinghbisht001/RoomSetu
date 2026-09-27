@@ -46,6 +46,16 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     const config = error.config as ExtendedAxiosConfig | undefined;
 
+    // Skip refresh attempt for auth endpoints to avoid infinite loops / rate limits
+    if (
+      config?.url?.includes('/auth/login') ||
+      config?.url?.includes('/auth/register') ||
+      config?.url?.includes('/auth/refresh') ||
+      config?.url?.includes('/auth/logout')
+    ) {
+      return Promise.reject(error);
+    }
+
     // Only attempt refresh on 401 responses that haven't already been retried
     if (error.response?.status !== 401 || !config || config._retried) {
       return Promise.reject(error);
