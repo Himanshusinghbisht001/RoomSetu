@@ -13,7 +13,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { FiMoon, FiSun, FiUser } from 'react-icons/fi';
+import { FiMoon, FiSun, FiUser, FiHeart } from 'react-icons/fi';
 import { useAuth } from '../auth/AuthProvider.js';
 import { useTheme } from '../providers/ThemeProvider.js';
 import { NotificationBell } from '../features/inquiries/components/NotificationBell.js';
@@ -120,6 +120,14 @@ export default function Navbar() {
                 </NavLink>
               </li>
             )}
+            {isAuthenticated && user?.role === 'seeker' && (
+              <li>
+                <NavLink to="/seeker/favorites" className={navLinkClass}>
+                  <FiHeart aria-hidden="true" style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+                  My Favorites
+                </NavLink>
+              </li>
+            )}
             {isAuthenticated && user?.role === 'owner' && (
               <li>
                 <NavLink to="/owner" className={navLinkClass}>
@@ -220,6 +228,13 @@ export default function Navbar() {
         {!(isAuthenticated && user?.role === 'owner') && (
           <NavLink to="/seeker" className={navLinkClass} onClick={closeMenu}>
             Find Rooms
+          </NavLink>
+        )}
+
+        {isAuthenticated && user?.role === 'seeker' && (
+          <NavLink to="/seeker/favorites" className={navLinkClass} onClick={closeMenu}>
+            <FiHeart aria-hidden="true" style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+            My Favorites
           </NavLink>
         )}
 

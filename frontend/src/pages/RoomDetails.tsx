@@ -6,6 +6,7 @@ import Footer from '../components/Footer.js';
 import { RoomReviewSection } from '../features/reviews/components/RoomReviewSection.js';
 import { InterestButton } from '../features/inquiries/components/InterestButton.js';
 import { FiChevronLeft, FiChevronRight, FiHome, FiMapPin, FiPhone, FiArrowLeft } from 'react-icons/fi';
+import { FavoriteButton } from '../features/seeker/components/FavoriteButton.js';
 
 export const RoomDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -222,13 +223,14 @@ export const RoomDetails: React.FC = () => {
                   {room.location.area}, {room.location.city}, {room.location.state}
                 </p>
               </div>
-              <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
                 <div style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', fontWeight: 900, color: 'var(--color-primary)', lineHeight: 1 }}>
                   ₹{room.rent.toLocaleString()}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, marginTop: '0.25rem' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                   per month
                 </div>
+                <FavoriteButton roomId={room._id || id || ''} size="md" />
               </div>
             </div>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Room } from '../types.js';
 import { FiMapPin, FiArrowRight } from 'react-icons/fi';
+import { FavoriteButton } from './FavoriteButton.js';
 
 interface RoomCardProps {
   room: Room;
@@ -80,6 +81,18 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
             {room.availability}
           </span>
           <span className="premium-badge-type">{room.roomType}</span>
+        </div>
+
+        {/* Favorite button — top right of image */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '0.6rem',
+            right: '0.6rem',
+            zIndex: 10,
+          }}
+        >
+          <FavoriteButton roomId={room._id} size="sm" />
         </div>
       </div>
 

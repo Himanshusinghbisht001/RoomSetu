@@ -12,6 +12,7 @@ import { SeekerHome } from '../pages/SeekerHome.js';
 import { RoomDetails } from '../pages/RoomDetails.js';
 import ChatPage from '../pages/ChatPage.js';
 import { ProfilePage } from '../pages/ProfilePage.js';
+import { SeekerFavorites } from '../pages/SeekerFavorites.js';
 
 export default function AppRoutes() {
   return (
@@ -60,6 +61,17 @@ export default function AppRoutes() {
           <RequireAuth>
             <RequireRole role="seeker">
               <SeekerHome />
+            </RequireRole>
+          </RequireAuth>
+        }
+      />
+
+      <Route
+        path="/seeker/favorites"
+        element={
+          <RequireAuth>
+            <RequireRole role="seeker">
+              <SeekerFavorites />
             </RequireRole>
           </RequireAuth>
         }
