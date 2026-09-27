@@ -1,5 +1,5 @@
-import { apiClient } from '../../../lib/api/client';
-import type { Room, PaginationInfo } from '../types';
+import { apiClient } from '../../../lib/api/client.js';
+import type { Room, PaginationInfo } from '../types.js';
 
 export interface FavoriteCheckResponse {
   success: boolean;

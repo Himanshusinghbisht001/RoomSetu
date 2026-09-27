@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { addFavorite, removeFavorite, getFavorites, checkFavorite } from '../api/favoritesApi';
-import { useAuth } from '../../../auth/AuthProvider';
+import { addFavorite, removeFavorite, getFavorites, checkFavorite } from '../api/favoritesApi.js';
+import { useAuth } from '../../../auth/AuthProvider.js';
 
 /** List all favorites for the authenticated seeker */
 export const useFavorites = (page = 1, limit = 10) => {

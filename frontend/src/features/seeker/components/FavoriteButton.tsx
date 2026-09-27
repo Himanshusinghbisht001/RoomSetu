@@ -2,8 +2,8 @@ import React from 'react';
 import { FiHeart } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../auth/AuthProvider';
-import { useFavoriteStatus, useToggleFavorite } from '../hooks/useFavorites';
+import { useAuth } from '../../../auth/AuthProvider.js';
+import { useFavoriteStatus, useToggleFavorite } from '../hooks/useFavorites.js';
 
 interface FavoriteButtonProps {
   roomId: string;
