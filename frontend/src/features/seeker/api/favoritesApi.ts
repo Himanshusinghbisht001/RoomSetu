@@ -7,7 +7,6 @@ export interface FavoriteCheckResponse {
 }
 
 export interface FavoritesListResponse {
-  success: boolean;
   data: Room[];
   pagination: PaginationInfo;
 }
@@ -23,8 +22,8 @@ export const removeFavorite = async (roomId: string): Promise<{ success: boolean
 };
 
 export const getFavorites = async (page = 1, limit = 10): Promise<FavoritesListResponse> => {
-  const response = await apiClient.get<FavoritesListResponse>('/favorites', { params: { page, limit } });
-  return response.data;
+  const response = await apiClient.get<{ success: boolean; data: FavoritesListResponse }>('/favorites', { params: { page, limit } });
+  return response.data.data;
 };
 
 export const checkFavorite = async (roomId: string): Promise<FavoriteCheckResponse> => {

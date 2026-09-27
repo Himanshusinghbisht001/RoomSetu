@@ -56,11 +56,25 @@ export const favoriteService = {
 
     // Filter out null rooms (soft-deleted rooms)
     const validFavorites = favorites.filter((fav) => fav.room != null);
-    
+
     const total = await Favorite.countDocuments({ user: new Types.ObjectId(userId) });
 
+    // .lean() bypasses Mongoose toJSON transforms, so _id is a raw ObjectId.
+    // Manually normalize each room to match the toJSON shape the frontend expects:
+    //   { id: string, _id: string, ...rest }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rooms = validFavorites.map((fav) => {
+      const room = fav.room as any;
+      const idStr = room._id?.toString() ?? '';
+      return {
+        ...room,
+        _id: idStr,
+        id: idStr,
+      };
+    });
+
     return {
-      data: validFavorites.map((fav) => fav.room),
+      data: rooms,
       pagination: {
         total,
         page,

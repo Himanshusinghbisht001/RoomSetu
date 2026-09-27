@@ -13,6 +13,7 @@ import { RoomDetails } from '../pages/RoomDetails.js';
 import ChatPage from '../pages/ChatPage.js';
 import { ProfilePage } from '../pages/ProfilePage.js';
 import { SeekerFavorites } from '../pages/SeekerFavorites.js';
+import { ErrorBoundary } from '../components/ErrorBoundary.js';
 
 export default function AppRoutes() {
   return (
@@ -71,7 +72,9 @@ export default function AppRoutes() {
         element={
           <RequireAuth>
             <RequireRole role="seeker">
-              <SeekerFavorites />
+              <ErrorBoundary>
+                <SeekerFavorites />
+              </ErrorBoundary>
             </RequireRole>
           </RequireAuth>
         }
