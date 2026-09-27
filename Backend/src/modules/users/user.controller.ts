@@ -15,6 +15,39 @@ export const getMe = async (req: Request, res: Response, next: NextFunction) => 
   }
 };
 
+export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    // Extract only allowed fields
+    const { name, phoneNumber, bio, avatar } = req.body;
+    
+    const updatedProfile = await userService.updateProfile(userId, { name, phoneNumber, bio, avatar });
+    
+    res.json({
+      success: true,
+      data: updatedProfile,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.id;
+    const { currentPassword, newPassword } = req.body;
+    
+    await userService.changePassword(userId, currentPassword, newPassword);
+    
+    res.json({
+      success: true,
+      data: { message: 'Password changed successfully' },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const exportMe = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user!.id;

@@ -8,6 +8,8 @@ const router = Router();
 router.use(requireAuth);
 
 router.get('/me', userController.getMe);
+router.patch('/profile', userController.updateProfile);
+router.patch('/password', userController.changePassword);
 router.get('/me/export', userController.exportMe);
 router.delete('/me', userController.deleteMe);
 

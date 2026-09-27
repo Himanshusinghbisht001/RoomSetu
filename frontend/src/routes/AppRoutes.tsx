@@ -11,6 +11,7 @@ import OwnerHome from '../pages/OwnerHome.js';
 import { SeekerHome } from '../pages/SeekerHome.js';
 import { RoomDetails } from '../pages/RoomDetails.js';
 import ChatPage from '../pages/ChatPage.js';
+import { ProfilePage } from '../pages/ProfilePage.js';
 
 export default function AppRoutes() {
   return (
@@ -28,6 +29,14 @@ export default function AppRoutes() {
         element={
           <RequireAuth>
             <ChatPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <RequireAuth>
+            <ProfilePage />
           </RequireAuth>
         }
       />

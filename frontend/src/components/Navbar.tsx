@@ -144,13 +144,39 @@ export default function Navbar() {
           <NotificationSettings />
 
           {isAuthenticated ? (
-            <button
-              className="btn btn-outline btn-sm"
-              onClick={handleLogout}
-              aria-label="Logout"
-            >
-              Logout
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <Link
+                to="/profile"
+                className="btn btn-ghost btn-sm"
+                aria-label="My Profile"
+                style={{ padding: '0.2rem', borderRadius: '50%' }}
+              >
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--surface-hover)',
+                    backgroundImage: user?.avatar ? `url(${user.avatar})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '1px solid var(--border)',
+                  }}
+                >
+                  {!user?.avatar && <span style={{ fontSize: '1rem' }}>👤</span>}
+                </div>
+              </Link>
+              <button
+                className="btn btn-outline btn-sm"
+                onClick={handleLogout}
+                aria-label="Logout"
+              >
+                Logout
+              </button>
+            </div>
           ) : (
             <>
               <Link to="/login" className="btn btn-outline btn-sm">
@@ -212,9 +238,14 @@ export default function Navbar() {
           </button>
 
           {isAuthenticated ? (
-            <button className="btn btn-outline btn-sm" onClick={handleLogout}>
-              Logout
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <Link to="/profile" className="btn btn-outline btn-sm" onClick={closeMenu}>
+                My Profile
+              </Link>
+              <button className="btn btn-outline btn-sm" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
           ) : (
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <Link to="/login" className="btn btn-outline btn-sm" onClick={closeMenu}>
