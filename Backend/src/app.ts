@@ -18,6 +18,7 @@ import { feedbackRoutes } from './modules/feedback/feedback.routes.js';
 import { reviewRoomRoutes, reviewRoutes } from './modules/reviews/review.routes.js';
 import { inquiryRoomRoutes, inquiryRoutes } from './modules/inquiries/inquiry.routes.js';
 import { chatRoutes } from './modules/chat/chat.routes.js';
+import { notificationRoutes } from './modules/notifications/notification.routes.js';
 import * as Sentry from '@sentry/node';
 
 /**
@@ -148,6 +149,7 @@ export function createApp(): Application {
   app.use('/api/v1/uploads', uploadRoutes);
   app.use('/api/v1/feedback', feedbackRoutes);
   app.use('/api/v1/chat', chatRoutes);
+  app.use('/api/v1/notifications', notificationRoutes);
 
   // Future module routes will be mounted here in later phases:
   // app.use('/api/v1/locations', locationRouter);

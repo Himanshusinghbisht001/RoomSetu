@@ -75,6 +75,11 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   FEEDBACK_RECEIVER_EMAIL: z.string().email('FEEDBACK_RECEIVER_EMAIL must be a valid email').optional(),
+
+  // ── Web Push Notifications (optional — validated lazily in push.service) ──
+  VAPID_PUBLIC_KEY: z.string().optional(),
+  VAPID_PRIVATE_KEY: z.string().optional(),
+  VAPID_SUBJECT: z.string().optional(),
 });
 
 // Parse and validate — fail fast on missing/invalid config

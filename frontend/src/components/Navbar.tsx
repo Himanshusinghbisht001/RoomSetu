@@ -17,6 +17,7 @@ import { useAuth } from '../auth/AuthProvider.js';
 import { useTheme } from '../providers/ThemeProvider.js';
 import { NotificationBell } from '../features/inquiries/components/NotificationBell.js';
 import { SeekerNotificationListener } from '../features/inquiries/components/SeekerNotificationListener.js';
+import { NotificationSettings } from '../features/notifications/components/NotificationSettings.js';
 import logoSrc from '../assets/logo.jpg';
 
 export default function Navbar() {
@@ -140,6 +141,7 @@ export default function Navbar() {
           </button>
 
           <NotificationBell />
+          <NotificationSettings />
 
           {isAuthenticated ? (
             <button
