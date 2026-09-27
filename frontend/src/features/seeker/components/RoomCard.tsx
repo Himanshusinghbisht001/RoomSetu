@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Room } from '../types.js';
+import { FiMapPin, FiArrowRight } from 'react-icons/fi';
 
 interface RoomCardProps {
   room: Room;
@@ -87,21 +88,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         <h3 className="premium-room-card-title">{room.title}</h3>
 
         <p className="premium-room-card-location">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
+          <FiMapPin aria-hidden="true" style={{ marginRight: '4px' }} />
           {room.location.area}, {room.location.city}
         </p>
 
@@ -124,7 +111,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
             <span className="period">/month</span>
           </div>
           <span className="view-details-btn" aria-hidden="true">
-            View Details →
+            View Details <FiArrowRight aria-hidden="true" style={{ marginLeft: '4px' }} />
           </span>
         </div>
       </div>

@@ -14,6 +14,7 @@ import MembershipCertificateModal from '../features/owner/components/MembershipC
 import { OwnerRequestsList } from '../features/inquiries/components/OwnerRequestsList.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
+import { FiAward } from 'react-icons/fi';
 
 export default function OwnerHome() {
   const { user } = useAuth();
@@ -66,7 +67,7 @@ export default function OwnerHome() {
                 onClick={() => setShowCertificate(true)}
                 aria-label="View Membership Certificate"
               >
-                📜 View Certificate
+                <FiAward aria-hidden="true" style={{ marginRight: '4px' }} /> View Certificate
               </button>
             )}
             <button

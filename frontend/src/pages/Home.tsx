@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import { useRooms, useLocationCounts } from '../features/seeker/hooks/useRooms.js';
+import { FiChevronLeft, FiChevronRight, FiArrowRight } from 'react-icons/fi';
 import { RoomCard } from '../features/seeker/components/RoomCard.js';
 import { useAuth } from '../auth/AuthProvider.js';
 
@@ -265,7 +266,7 @@ export default function Home() {
               disabled={!canScrollLeft}
               aria-label="Previous locations"
             >
-              &larr;
+              <FiChevronLeft aria-hidden="true" />
             </button>
             <div className="location-grid" ref={carouselRef} role="list" aria-label="Popular locations in Nainital">
               {sortedLocations.map((loc) => {
@@ -318,7 +319,7 @@ export default function Home() {
               disabled={!canScrollRight}
               aria-label="Next locations"
             >
-              &rarr;
+              <FiChevronRight aria-hidden="true" />
             </button>
           </div>
         )}
@@ -346,7 +347,7 @@ export default function Home() {
 
         <div className="view-all-wrapper">
           <Link to="/seeker" className="btn btn-outline btn-lg" id="view-all-rooms-btn">
-            View All Rooms →
+            View All Rooms <FiArrowRight aria-hidden="true" style={{ marginLeft: '4px' }} />
           </Link>
         </div>
       </section>

@@ -25,6 +25,7 @@ import { useCreateRoom, useUpdateRoom } from '../hooks/useOwnerRooms.js';
 import { uploadImages } from '../api/uploadApi.js';
 import type { Room } from '../types.js';
 import MembershipCertificateModal from './MembershipCertificateModal.js';
+import { FiX, FiTrash2, FiPlusCircle, FiLoader } from 'react-icons/fi';
 
 // ── Form schema (images handled separately via state) ─────────────────────────
 
@@ -398,7 +399,7 @@ export default function RoomForm({ room, onClose }: Props) {
             onClick={onClose}
             aria-label="Close form"
           >
-            ✕
+            <FiX aria-hidden="true" />
           </button>
         </div>
 
@@ -729,7 +730,7 @@ export default function RoomForm({ room, onClose }: Props) {
                       aria-label={`Remove image ${idx + 1}`}
                       style={{ padding: '0.2rem 0.5rem', marginLeft: 'auto' }}
                     >
-                      🗑️
+                      <FiTrash2 aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -751,7 +752,7 @@ export default function RoomForm({ room, onClose }: Props) {
                       }
                     }}
                   >
-                    <div className="image-upload-icon">➕</div>
+                    <div className="image-upload-icon"><FiPlusCircle aria-hidden="true" /></div>
                     <span>Add Image</span>
                   </label>
                   <input
@@ -776,7 +777,7 @@ export default function RoomForm({ room, onClose }: Props) {
                 role="status"
                 aria-live="polite"
               >
-                ⏳ Images are uploading — the form will be enabled once complete.
+                <FiLoader className="upload-spinner" aria-hidden="true" style={{ display: 'inline-block', marginRight: '6px' }} /> Images are uploading — the form will be enabled once complete.
               </p>
             )}
           </div>

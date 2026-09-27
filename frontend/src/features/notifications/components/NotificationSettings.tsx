@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FiBell, FiBellOff } from 'react-icons/fi';
 import { 
   isPushSupported, 
   subscribeToPush, 
@@ -74,7 +75,7 @@ export const NotificationSettings: React.FC = () => {
            disabled={loading}
            title="Disable Web Push Notifications"
          >
-           🔕 Disable Push
+           <FiBellOff size={15} aria-hidden="true" /> Disable Push
          </button>
        ) : (
          <button 
@@ -83,7 +84,7 @@ export const NotificationSettings: React.FC = () => {
            disabled={loading || permission === 'denied'}
            title={permission === 'denied' ? 'Notifications blocked in browser' : 'Enable Web Push Notifications'}
          >
-           {permission === 'denied' ? '🚫 Push Blocked' : '🔔 Enable Push'}
+           {permission === 'denied' ? <><FiBellOff size={15} aria-hidden="true" /> Push Blocked</> : <><FiBell size={15} aria-hidden="true" /> Enable Push</>}
          </button>
        )}
        {error && <span style={{position:'absolute', bottom:'-20px', left:0, color:'var(--danger)', fontSize:'10px', whiteSpace:'nowrap'}}>{error}</span>}

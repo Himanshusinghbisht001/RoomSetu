@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '../../../auth/AuthProvider.js';
+import { FiUser } from 'react-icons/fi';
 import { useUpdateProfile } from '../hooks/useProfile.js';
 import { uploadImages } from '../../owner/api/uploadApi.js';
 
@@ -113,7 +114,7 @@ export const ProfileSettings: React.FC = () => {
               border: '2px solid var(--border)'
             }}
           >
-            {!avatarUrl && <span style={{ fontSize: '2.5rem' }}>👤</span>}
+            {!avatarUrl && <FiUser style={{ fontSize: '2.5rem' }} aria-hidden="true" />}
           </div>
           <label className="btn btn-outline btn-sm" style={{ cursor: 'pointer' }}>
             {isUploading ? 'Uploading...' : 'Change Avatar'}

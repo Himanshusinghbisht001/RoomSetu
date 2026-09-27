@@ -13,6 +13,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { FiMoon, FiSun, FiUser } from 'react-icons/fi';
 import { useAuth } from '../auth/AuthProvider.js';
 import { useTheme } from '../providers/ThemeProvider.js';
 import { NotificationBell } from '../features/inquiries/components/NotificationBell.js';
@@ -137,7 +138,7 @@ export default function Navbar() {
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
-            {theme === 'light' ? '🌙' : '☀️'}
+            {theme === 'light' ? <FiMoon size={18} aria-hidden="true" /> : <FiSun size={18} aria-hidden="true" />}
           </button>
 
           <NotificationBell />
@@ -166,7 +167,7 @@ export default function Navbar() {
                     border: '1px solid var(--border)',
                   }}
                 >
-                  {!user?.avatar && <span style={{ fontSize: '1rem' }}>👤</span>}
+                  {!user?.avatar && <FiUser size={18} aria-hidden="true" />}
                 </div>
               </Link>
               <button
@@ -234,7 +235,7 @@ export default function Navbar() {
             onClick={() => { toggleTheme(); closeMenu(); }}
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
-            {theme === 'light' ? '🌙' : '☀️'}
+            {theme === 'light' ? <FiMoon size={18} aria-hidden="true" /> : <FiSun size={18} aria-hidden="true" />}
           </button>
 
           {isAuthenticated ? (

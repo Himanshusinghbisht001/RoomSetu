@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 interface StarRatingProps {
   rating: number;
@@ -33,7 +34,7 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange, 
             onMouseEnter={() => !readonly && setHoverRating(star)}
             onMouseLeave={() => !readonly && setHoverRating(null)}
           >
-            {isFilled ? '⭐' : '☆'}
+            {isFilled ? <FaStar aria-hidden="true" /> : <FaRegStar aria-hidden="true" />}
           </button>
         );
       })}

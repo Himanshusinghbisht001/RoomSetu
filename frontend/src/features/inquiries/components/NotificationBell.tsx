@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { FiBell, FiCheck, FiX, FiArrowRight } from 'react-icons/fi';
 import { useSocket } from '../../../lib/socket/useSocket.js';
 import { useAuth } from '../../../auth/AuthProvider.js';
 import { useReceivedInquiries, useAcceptInquiry, useRejectInquiry } from '../hooks/useInquiries.js';
@@ -180,7 +181,7 @@ export const NotificationBell: React.FC = () => {
         aria-expanded={isOpen}
         aria-haspopup="menu"
       >
-        🔔
+        <FiBell size={20} aria-hidden="true" />
         {unreadCount > 0 && (
           <span
             aria-hidden="true"
@@ -368,7 +369,7 @@ export const NotificationBell: React.FC = () => {
                             padding: '0.35rem 0',
                           }}
                         >
-                          ✓ Interest Accepted
+                          <FiCheck size={14} aria-hidden="true" /> Interest Accepted
                         </div>
                         <button
                           onClick={(e) => {
@@ -404,7 +405,7 @@ export const NotificationBell: React.FC = () => {
                           padding: '0.35rem 0',
                         }}
                       >
-                        ✕ Request Rejected
+                        <FiX size={14} aria-hidden="true" /> Request Rejected
                       </div>
                     ) : (
                       /* Pending — show Accept / Reject + View Request */
@@ -428,7 +429,7 @@ export const NotificationBell: React.FC = () => {
                             transition: 'all var(--transition)',
                           }}
                         >
-                          {state === 'accepting' ? '...' : '✓ Accept'}
+                          {state === 'accepting' ? '...' : <><FiCheck size={13} aria-hidden="true" /> Accept</>}
                         </button>
 
                         {/* Reject */}
@@ -450,7 +451,7 @@ export const NotificationBell: React.FC = () => {
                             transition: 'all var(--transition)',
                           }}
                         >
-                          {state === 'rejecting' ? '...' : '✕ Reject'}
+                          {state === 'rejecting' ? '...' : <><FiX size={13} aria-hidden="true" /> Reject</>}
                         </button>
 
                         {/* View Request */}
@@ -474,7 +475,7 @@ export const NotificationBell: React.FC = () => {
                             textAlign: 'center',
                           }}
                         >
-                          View Request →
+                          View Request <FiArrowRight size={13} aria-hidden="true" />
                         </button>
                       </div>
                     )}

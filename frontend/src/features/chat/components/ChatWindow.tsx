@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../auth/AuthProvider.js';
 import { useChatMessages, useSendMessage } from '../hooks/useChat.js';
 import { MessageBubble } from './MessageBubble.js';
+import { FiMessageSquare, FiSend, FiX } from 'react-icons/fi';
 
 interface ChatWindowProps {
   inquiryId: string;
@@ -106,9 +107,7 @@ export function ChatWindow({ inquiryId, chatTitle, chatSubtitle }: ChatWindowPro
       {/* Header */}
       <div className="chat-header">
         <div className="chat-header__icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
+          <FiMessageSquare size={20} aria-hidden="true" />
         </div>
         <div className="chat-header__info">
           <span className="chat-header__title">{chatTitle}</span>
@@ -122,9 +121,7 @@ export function ChatWindow({ inquiryId, chatTitle, chatSubtitle }: ChatWindowPro
         {(!messages || messages.length === 0) ? (
           <div className="chat-empty">
             <div className="chat-empty__icon" aria-hidden="true">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
+              <FiMessageSquare size={40} aria-hidden="true" strokeWidth="1.5" />
             </div>
             <p className="chat-empty__title">No messages yet</p>
             <p className="chat-empty__hint">Send the first message to get the conversation started.</p>
@@ -145,7 +142,7 @@ export function ChatWindow({ inquiryId, chatTitle, chatSubtitle }: ChatWindowPro
       {sendError && (
         <div className="chat-send-error" role="alert">
           <span>{sendError}</span>
-          <button className="chat-send-error__dismiss" onClick={() => setSendError(null)} aria-label="Dismiss error">✕</button>
+          <button className="chat-send-error__dismiss" onClick={() => setSendError(null)} aria-label="Dismiss error"><FiX aria-hidden="true" /></button>
         </div>
       )}
 
@@ -172,10 +169,7 @@ export function ChatWindow({ inquiryId, chatTitle, chatSubtitle }: ChatWindowPro
           {sending ? (
             <span className="chat-composer__sending-dots" aria-hidden="true" />
           ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13" />
-              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-            </svg>
+            <FiSend size={18} aria-hidden="true" strokeWidth="2.5" />
           )}
         </button>
       </div>

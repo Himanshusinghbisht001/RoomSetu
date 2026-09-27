@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { FiX, FiCheckCircle } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -110,14 +111,14 @@ export default function FeedbackModal({ isOpen, onClose, defaultType = 'Suggesti
             onClick={handleClose}
             aria-label="Close modal"
           >
-            ✕
+            <FiX aria-hidden="true" />
           </button>
         </div>
 
         <div className="modal-body">
           {submitSuccess ? (
             <div className="success-card text-center py-8" role="status">
-              <div className="mb-4 text-3xl">✅</div>
+              <div className="mb-4 text-3xl"><FiCheckCircle aria-hidden="true" /></div>
               <h4 className="font-bold mb-2">Thank you for your feedback!</h4>
               <p>Your response has been submitted successfully.</p>
               <button

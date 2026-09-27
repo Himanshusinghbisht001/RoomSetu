@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { FiCheck, FiMessageCircle, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../auth/AuthProvider.js';
 import { useCreateInquiry, useMyInquiries, useCancelInquiry } from '../hooks/useInquiries.js';
 import type { Inquiry, InquiryPurpose } from '../types.js';
@@ -175,7 +176,7 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
               fontSize: '0.9rem',
             }}
           >
-            <span aria-hidden="true">✓</span> Request Sent
+            <FiCheck aria-hidden="true" /> Request Sent
           </div>
           <button
             className="btn btn-outline w-full text-center"
@@ -202,14 +203,14 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
               fontSize: '0.9rem',
             }}
           >
-            <span aria-hidden="true">✓</span> Interest Accepted
+            <FiCheck aria-hidden="true" /> Interest Accepted
           </div>
           <Link
             to={`/chat/${activeInquiry.id}`}
             className="btn btn-outline w-full text-center"
             style={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}
           >
-            💬 Chat with Owner
+            <FiMessageCircle aria-hidden="true" style={{ marginRight: '4px' }} /> Chat with Owner
           </Link>
         </div>
       );
@@ -341,7 +342,7 @@ export const InterestButton: React.FC<InterestButtonProps> = ({ roomId }) => {
                   borderRadius: 'var(--radius-sm)',
                 }}
               >
-                ×
+                <FiX aria-hidden="true" />
               </button>
             </div>
 

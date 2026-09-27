@@ -3,6 +3,7 @@
  */
 
 import { useDashboardSummary } from '../hooks/useOwnerDashboard.js';
+import { FiHome, FiCheckCircle, FiCalendar, FiTrash2 } from 'react-icons/fi';
 
 function SkeletonStatCard() {
   return (
@@ -36,10 +37,10 @@ export default function DashboardSummary() {
   }
 
   const stats = [
-    { icon: '🏠', label: 'Total Rooms', value: data?.totalRooms ?? 0 },
-    { icon: '✅', label: 'Available', value: data?.availableRooms ?? 0 },
-    { icon: '📅', label: 'Booked', value: data?.bookedRooms ?? 0 },
-    { icon: '🗑️', label: 'Deleted', value: data?.deletedRooms ?? 0 },
+    { icon: <FiHome aria-hidden="true" />, label: 'Total Rooms', value: data?.totalRooms ?? 0 },
+    { icon: <FiCheckCircle aria-hidden="true" />, label: 'Available', value: data?.availableRooms ?? 0 },
+    { icon: <FiCalendar aria-hidden="true" />, label: 'Booked', value: data?.bookedRooms ?? 0 },
+    { icon: <FiTrash2 aria-hidden="true" />, label: 'Deleted', value: data?.deletedRooms ?? 0 },
   ];
 
   return (

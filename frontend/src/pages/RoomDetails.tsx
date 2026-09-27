@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import { RoomReviewSection } from '../features/reviews/components/RoomReviewSection.js';
 import { InterestButton } from '../features/inquiries/components/InterestButton.js';
+import { FiChevronLeft, FiChevronRight, FiHome, FiMapPin, FiPhone, FiArrowLeft } from 'react-icons/fi';
 
 export const RoomDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -89,7 +90,7 @@ export const RoomDetails: React.FC = () => {
         {/* Breadcrumb back */}
         <div style={{ marginBottom: '1.5rem' }}>
           <Link to="/seeker" className="btn btn-ghost btn-sm" style={{ paddingLeft: 0 }}>
-            ← Back to Discover
+            <FiArrowLeft aria-hidden="true" style={{ marginRight: '4px' }} /> Back to Discover
           </Link>
         </div>
 
@@ -142,7 +143,7 @@ export const RoomDetails: React.FC = () => {
                       aria-label="Previous image"
                       style={{ zIndex: 10 }}
                     >
-                      &larr;
+                      <FiChevronLeft aria-hidden="true" />
                     </button>
                     <button
                       className="carousel-btn next"
@@ -153,14 +154,14 @@ export const RoomDetails: React.FC = () => {
                       aria-label="Next image"
                       style={{ zIndex: 10 }}
                     >
-                      &rarr;
+                      <FiChevronRight aria-hidden="true" />
                     </button>
                   </>
                 )}
               </>
             ) : (
               <div className="gallery-main-placeholder" aria-hidden="true">
-                <span>🏠</span>
+                <FiHome size={24} aria-hidden="true" />
                 <span style={{ fontSize: '1rem' }}>No images available</span>
               </div>
             )}
@@ -217,7 +218,7 @@ export const RoomDetails: React.FC = () => {
                   {room.title}
                 </h1>
                 <p style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.925rem' }}>
-                  <span aria-hidden="true">📍</span>
+                  <FiMapPin aria-hidden="true" />
                   {room.location.area}, {room.location.city}, {room.location.state}
                 </p>
               </div>
@@ -305,7 +306,7 @@ export const RoomDetails: React.FC = () => {
                       className="btn btn-primary w-full text-center"
                       aria-label={`Call owner at ${room.contactNumber}`}
                     >
-                      📞 {room.contactNumber}
+                      <FiPhone aria-hidden="true" style={{ marginRight: '4px' }} /> {room.contactNumber}
                     </a>
                     
                     <InterestButton roomId={room._id || id || ''} />

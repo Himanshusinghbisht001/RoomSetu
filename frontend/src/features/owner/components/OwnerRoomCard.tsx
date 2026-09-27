@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import type { Room } from '../types.js';
+import { FiHome } from 'react-icons/fi';
 import AvailabilityControl from './AvailabilityControl.js';
 import DeleteRoomDialog from './DeleteRoomDialog.js';
 import { useDeleteRoom } from '../hooks/useOwnerRooms.js';
@@ -57,7 +58,7 @@ export default function OwnerRoomCard({ room, onEdit }: Props) {
         {imageUrl ? (
           <img src={imageUrl} alt="" loading="lazy" />
         ) : (
-          <div className="room-card-thumb-placeholder">🏠</div>
+          <div className="room-card-thumb-placeholder"><FiHome aria-hidden="true" /></div>
         )}
       </div>
 

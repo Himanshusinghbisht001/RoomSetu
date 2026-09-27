@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRooms } from '../features/seeker/hooks/useRooms.js';
 import { RoomFilters } from '../features/seeker/components/RoomFilters.js';
 import { RoomCard } from '../features/seeker/components/RoomCard.js';
+import { FiSearch } from 'react-icons/fi';
 import { Pagination } from '../features/seeker/components/Pagination.js';
 import { useSearchParams } from 'react-router-dom';
 import type { RoomQueryParams } from '../features/seeker/types.js';
@@ -63,7 +64,7 @@ export const SeekerHome: React.FC = () => {
           </div>
         ) : !data || data.data.length === 0 ? (
           <div className="empty-state card" role="status">
-            <span className="empty-state-icon" aria-hidden="true">🔍</span>
+            <FiSearch className="empty-state-icon" aria-hidden="true" />
             <h3>No rooms found</h3>
             <p className="text-secondary mb-4">
               Try adjusting your search or filters to see more results.
