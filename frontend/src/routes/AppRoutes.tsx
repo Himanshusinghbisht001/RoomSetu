@@ -5,6 +5,7 @@ import RequireRole from '../components/RequireRole.js';
 import Home from '../pages/Home.js';
 import Login from '../pages/Login.js';
 import Register from '../pages/Register.js';
+import VerifyEmail from '../pages/VerifyEmail.js';
 import Forbidden from '../pages/Forbidden.js';
 import NotFound from '../pages/NotFound.js';
 import OwnerHome from '../pages/OwnerHome.js';
@@ -22,6 +23,7 @@ export default function AppRoutes() {
       <Route path="/rooms/:id" element={<RoomDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/403" element={<Forbidden />} />
       <Route path="*" element={<NotFound />} />
 

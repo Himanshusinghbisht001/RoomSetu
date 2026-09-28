@@ -158,3 +158,104 @@ export async function sendFeedbackNotification(feedback: IFeedback): Promise<voi
     // Explicitly NOT re-throwing: the feedback is already saved in MongoDB.
   }
 }
+
+// ── OTP Verification Email ─────────────────────────────────────────────────────
+
+/**
+ * Returns true if SMTP is configured (same check used for feedback emails).
+ * Used specifically to gate OTP email sending.
+ */
+export function isOtpEmailConfigured(): boolean {
+  return (
+    !!env.SMTP_HOST &&
+    !!env.SMTP_PORT &&
+    !!env.SMTP_USER &&
+    !!env.SMTP_PASS
+  );
+}
+
+/**
+ * Sends an OTP verification email to the user's registered email address.
+ *
+ * Behavior:
+ *  - If SMTP is not configured: throws so the caller can return a safe error.
+ *  - If SMTP send fails: throws so the caller knows the OTP was not delivered.
+ *
+ * Security:
+ *  - The plaintext OTP is only used to compose the email body and is never
+ *    logged or stored anywhere by this function.
+ *  - SMTP credentials are never logged.
+ *  - CR/LF are stripped from all header values.
+ *
+ * @param recipientEmail  The user's registered email address (server-controlled)
+ * @param otp             Plaintext 6-digit OTP (held only for the duration of this call)
+ */
+export async function sendVerificationOTP(
+  recipientEmail: string,
+  otp: string,
+): Promise<void> {
+  if (!isOtpEmailConfigured()) {
+    throw new Error('SMTP is not configured; cannot send verification email.');
+  }
+
+  // Basic sanitization
+  const safeEmail = recipientEmail.replace(/[\r\n]/g, '');
+  const subject = '[RoomSetu] Email Verification Code';
+
+  const text = [
+    'RoomSetu',
+    'Email Verification Code',
+    '',
+    'Your verification code is:',
+    '',
+    `  ${otp}`,
+    '',
+    'This code expires in 10 minutes.',
+    '',
+    'Do not share this code with anyone.',
+    '',
+    'If you did not create a RoomSetu account, please ignore this email.',
+  ].join('\n');
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f4f5;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;">
+        <tr><td style="background:#4f46e5;padding:28px 40px;">
+          <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">RoomSetu</h1>
+        </td></tr>
+        <tr><td style="padding:40px;">
+          <h2 style="margin:0 0 8px;color:#111827;font-size:20px;font-weight:700;">Email Verification Code</h2>
+          <p style="margin:0 0 32px;color:#6b7280;font-size:15px;">Use the code below to verify your email address.</p>
+          <div style="background:#f9fafb;border:2px dashed #e5e7eb;border-radius:10px;padding:28px;text-align:center;margin-bottom:32px;">
+            <span style="font-size:40px;font-weight:800;letter-spacing:12px;color:#4f46e5;font-family:'Courier New',monospace;">${otp}</span>
+          </div>
+          <p style="margin:0 0 8px;color:#6b7280;font-size:14px;">⏱ This code expires in <strong>10 minutes</strong>.</p>
+          <p style="margin:0;color:#6b7280;font-size:14px;">🔒 Do not share this code with anyone.</p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:20px 40px;">
+          <p style="margin:0;color:#9ca3af;font-size:12px;">If you did not create a RoomSetu account, please ignore this email.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  try {
+    const transporterToUse = getTransporter();
+    await transporterToUse.sendMail({
+      from: `"RoomSetu" <${env.SMTP_USER}>`,
+      to: safeEmail,
+      subject,
+      text,
+      html,
+    });
+  } catch (err) {
+    throw new Error('Failed to send verification email. Please try again.');
+  }
+}

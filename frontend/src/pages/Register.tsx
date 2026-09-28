@@ -57,9 +57,9 @@ export default function Register() {
         password: data.password,
         role: data.role,
       });
-      // Redirect to login after successful registration
-      navigate('/login', {
-        state: { registered: true },
+      // Redirect to email verification after successful registration
+      navigate('/verify-email', {
+        state: { email: data.email },
         replace: true,
       });
     } catch (err: any) {

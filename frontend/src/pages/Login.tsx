@@ -29,7 +29,7 @@ export default function Login() {
   const returnTo = searchParams.get('returnTo');
   
   const from = returnTo || (location.state as any)?.from?.pathname || '/';
-  const justRegistered = (location.state as any)?.registered === true;
+  const justVerified = (location.state as any)?.verified === true;
 
   // Redirect if already logged in, unless returning from 403
   useEffect(() => {
@@ -53,6 +53,12 @@ export default function Login() {
       const msg =
         err?.response?.data?.error?.message ||
         'Invalid email or password. Please try again.';
+      
+      if (msg.includes('verify your email')) {
+        navigate('/verify-email', { state: { email: data.email }, replace: true });
+        return;
+      }
+      
       setServerError(msg);
     }
   };
@@ -66,9 +72,9 @@ export default function Login() {
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to your RoomSetu account</p>
 
-        {justRegistered && (
+        {justVerified && (
           <div className="success-card" role="status" aria-live="polite">
-            Account created! Please sign in.
+            Email verified successfully! Please sign in.
           </div>
         )}
 
