@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { rateLimit } from 'express-rate-limit';
 import * as authService from './auth.service.js';
-import { registerSchema, loginSchema, verifyEmailSchema, resendVerificationSchema } from './auth.schema.js';
+import { registerSchema, loginSchema } from './auth.schema.js';
 import { isProd } from '../../config/env.js';
 
 // Rate limiting for auth endpoints
@@ -119,38 +119,6 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
       success: true,
       data: {
         message: 'Logged out successfully',
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const input = verifyEmailSchema.parse(req).body;
-    await authService.verifyEmail(input);
-
-    res.json({
-      success: true,
-      data: {
-        message: 'Email verified successfully',
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const resendVerification = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const input = resendVerificationSchema.parse(req).body;
-    await authService.resendVerification(input);
-
-    res.json({
-      success: true,
-      data: {
-        message: 'Verification email sent',
       },
     });
   } catch (error) {

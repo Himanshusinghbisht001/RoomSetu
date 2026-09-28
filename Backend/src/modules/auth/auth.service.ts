@@ -3,12 +3,9 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { User, IUser } from '../users/user.model.js';
 import { RefreshSession } from './refreshSession.model.js';
-import { EmailVerification } from './emailVerification.model.js';
-import { RegisterInput, LoginInput, VerifyEmailInput, ResendVerificationInput } from './auth.schema.js';
+import { RegisterInput, LoginInput } from './auth.schema.js';
 import { env } from '../../config/env.js';
 import { AppError } from '../../utils/AppError.js';
-import { generateOTP, hashOTP, verifyOTP, otpExpiresAt } from '../../utils/otp.js';
-import { sendVerificationOTP } from '../../services/email.service.js';
 
 interface TokenPayload {
   sub: string;
@@ -92,10 +89,7 @@ export const register = async (input: RegisterInput) => {
     email: input.email,
     passwordHash,
     role: input.role,
-    emailVerified: false,
   });
-
-  await handleOTPGeneration(user._id.toString(), user.email);
 
   return {
     id: user._id.toString(),
@@ -112,10 +106,6 @@ export const login = async (input: LoginInput) => {
   const user = await User.findOne({ email: input.email });
   if (!user || user.isDeleted) {
     throw genericError;
-  }
-
-  if (!user.emailVerified) {
-    throw AppError.forbidden('Please verify your email before logging in.');
   }
 
   // Check if account is locked
@@ -230,65 +220,4 @@ export const logout = async (refreshToken: string) => {
     { refreshTokenHash: hashedToken, revokedAt: null },
     { revokedAt: new Date() }
   );
-};
-
-export const handleOTPGeneration = async (userId: string, email: string) => {
-  await EmailVerification.deleteMany({ userId });
-  
-  const otp = generateOTP();
-  const hashedOtp = hashOTP(otp);
-  
-  await EmailVerification.create({
-    userId,
-    email,
-    otpHash: hashedOtp,
-    expiresAt: otpExpiresAt(10),
-    lastSentAt: new Date(),
-  });
-  
-  sendVerificationOTP(email, otp).catch(err => console.error('Failed to send OTP:', err));
-};
-
-export const verifyEmail = async (input: VerifyEmailInput) => {
-  const user = await User.findOne({ email: input.email });
-  if (!user) throw AppError.notFound('User not found');
-  if (user.emailVerified) throw AppError.badRequest('Email is already verified');
-
-  const verification = await EmailVerification.findOne({ userId: user._id });
-  if (!verification) throw AppError.badRequest('No verification code found. Please request a new one.');
-  
-  if (verification.expiresAt < new Date()) {
-    throw AppError.badRequest('Verification code has expired. Please request a new one.');
-  }
-  
-  if (verification.attempts >= 5) {
-    await EmailVerification.deleteOne({ _id: verification._id });
-    throw AppError.badRequest('Too many failed attempts. Please request a new code.');
-  }
-
-  if (!verifyOTP(input.otp, verification.otpHash)) {
-    verification.attempts += 1;
-    await verification.save();
-    throw AppError.badRequest('Invalid verification code');
-  }
-
-  user.emailVerified = true;
-  await user.save();
-  await EmailVerification.deleteOne({ _id: verification._id });
-};
-
-export const resendVerification = async (input: ResendVerificationInput) => {
-  const user = await User.findOne({ email: input.email });
-  if (!user) throw AppError.notFound('User not found');
-  if (user.emailVerified) throw AppError.badRequest('Email is already verified');
-
-  const existing = await EmailVerification.findOne({ userId: user._id });
-  if (existing) {
-    const timeSinceLastSent = new Date().getTime() - existing.lastSentAt.getTime();
-    if (timeSinceLastSent < 60000) {
-      throw AppError.badRequest('Please wait 60 seconds before requesting a new code');
-    }
-  }
-
-  await handleOTPGeneration(user._id.toString(), input.email);
 };

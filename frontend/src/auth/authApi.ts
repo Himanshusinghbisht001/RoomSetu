@@ -60,12 +60,4 @@ export async function logout(): Promise<void> {
   }
 }
 
-// ── Verification ──────────────────────────────────────────────────────────────
 
-export async function verifyEmail(payload: { email: string; otp: string }): Promise<void> {
-  await apiClient.post('/auth/verify-email', payload);
-}
-
-export async function resendVerification(payload: { email: string }): Promise<void> {
-  await apiClient.post('/auth/resend-verification', payload);
-}

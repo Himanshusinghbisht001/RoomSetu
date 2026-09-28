@@ -10,7 +10,6 @@ export interface IUser extends Document {
   role: 'seeker' | 'owner';
   failedLoginAttempts: number;
   lockedUntil: Date | null;
-  emailVerified: boolean;
   isDeleted: boolean;
   deletedAt: Date | null;
   createdAt: Date;
@@ -60,10 +59,6 @@ const userSchema = new Schema<IUser>(
     lockedUntil: {
       type: Date,
       default: null,
-    },
-    emailVerified: {
-      type: Boolean,
-      default: false,
     },
     isDeleted: {
       type: Boolean,
