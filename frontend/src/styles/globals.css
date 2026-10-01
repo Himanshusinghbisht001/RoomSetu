@@ -2346,6 +2346,10 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
   padding: 7rem 1.5rem;
   max-width: 1280px;
   margin: 0 auto;
+  /* Prevent any child element from overflowing the section */
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .home-section-header {
@@ -2381,6 +2385,11 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
 .location-carousel-wrapper {
   position: relative;
   width: 100%;
+  /* Give horizontal room for the absolutely-positioned prev/next buttons
+     (each 40px wide, sitting at -20px from the edge) so they stay
+     within the section's padding and don't create page-level overflow. */
+  padding: 0 28px;
+  box-sizing: border-box;
 }
 
 .location-grid {
@@ -2402,7 +2411,9 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
 .location-card {
   position: relative;
   flex: 0 0 calc(25% - 0.9375rem); /* approx 4 cards on desktop */
-  min-width: 250px;
+  /* Removed min-width: 250px — it overrides flex-basis on narrow viewports
+     and causes cards to exceed the mobile container width. */
+  min-width: 0;
   height: 320px;
   scroll-snap-align: start;
 }
@@ -2550,10 +2561,26 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
 
 /* Mobile: single column / swipe */
 @media (max-width: 600px) {
-  .popular-locations-section { padding: 4rem 1rem; }
+  .popular-locations-section {
+    padding: 4rem 1rem;
+  }
+  .location-carousel-wrapper {
+    /* No extra padding needed — buttons are hidden on mobile.
+       overflow:hidden contains scroll content within the section. */
+    padding: 0;
+    overflow: hidden;
+  }
+  .location-grid {
+    /* Allow the grid itself to overflow internally (it's a scroll container)
+       but clipped by the wrapper above. */
+    overflow-x: auto;
+  }
   .location-card {
-    flex: 0 0 85%; /* approx 1.1 cards visible */
+    /* 85vw-like width: fills most of the viewport so the next card peeks.
+       Using calc to account for the 1rem section padding on each side. */
+    flex: 0 0 min(85%, calc(100vw - 3rem));
     height: 250px;
+    min-width: 0;
   }
   .carousel-btn {
     display: none; /* Hide buttons on mobile, rely on swipe */
