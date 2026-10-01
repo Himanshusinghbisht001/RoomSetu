@@ -2565,21 +2565,21 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
     padding: 4rem 1rem;
   }
   .location-carousel-wrapper {
-    /* No extra padding needed — buttons are hidden on mobile.
-       overflow:hidden contains scroll content within the section. */
+    /* No extra padding needed — buttons are hidden on mobile. */
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
   }
   .location-grid {
-    /* Allow the grid itself to overflow internally (it's a scroll container)
-       but clipped by the wrapper above. */
+    /* Allow the grid itself to overflow internally (it's a scroll container) */
     overflow-x: auto;
+    padding-right: 1rem;
   }
   .location-card {
-    /* 85vw-like width: fills most of the viewport so the next card peeks.
-       Using calc to account for the 1rem section padding on each side. */
-    flex: 0 0 min(85%, calc(100vw - 3rem));
-    height: 250px;
+    /* clamp limits card width to 250-300px based on viewport (around 75vw)
+       so it fits comfortably on 320-430px screens. */
+    flex: 0 0 clamp(250px, 75vw, 300px);
+    aspect-ratio: 6 / 5;
+    height: auto;
     min-width: 0;
   }
   .carousel-btn {
