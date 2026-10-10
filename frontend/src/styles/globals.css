@@ -2565,14 +2565,17 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
     padding: 4rem 1rem;
   }
   .location-carousel-wrapper {
-    /* No extra padding needed — buttons are hidden on mobile. */
+    /* No extra padding needed — buttons are hidden on mobile.
+       overflow: hidden (not visible) so the internal flex content
+       cannot leak to the document scroll width. */
     padding: 0;
-    overflow: visible;
+    overflow: hidden;
   }
   .location-grid {
-    /* Allow the grid itself to overflow internally (it's a scroll container) */
+    /* Allow the grid itself to overflow internally (it's a scroll container).
+       padding-right removed — the wrapper clips it and it was the
+       source of the trailing-space leak at the document level. */
     overflow-x: auto;
-    padding-right: 1rem;
   }
   .location-card {
     /* Limit card width to 85% of container width to show a preview,
