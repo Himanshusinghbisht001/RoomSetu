@@ -2575,12 +2575,13 @@ html:not([data-theme="dark"]) .navbar .hamburger span {
     padding-right: 1rem;
   }
   .location-card {
-    /* clamp limits card width to 250-300px based on viewport (around 75vw)
-       so it fits comfortably on 320-430px screens. */
-    flex: 0 0 clamp(250px, 75vw, 300px);
+    /* Limit card width to 85% of container width to show a preview,
+       but never wider than 280px. This guarantees it fits inside any mobile screen. */
+    flex: 0 0 min(85%, 280px);
     aspect-ratio: 6 / 5;
     height: auto;
     min-width: 0;
+    box-sizing: border-box;
   }
   .carousel-btn {
     display: none; /* Hide buttons on mobile, rely on swipe */
