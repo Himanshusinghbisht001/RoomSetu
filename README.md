@@ -1,14 +1,8 @@
 # 🏠 RoomSetu — Find Your Space, Find the Right Place
 
-\<p align="center">
-&#x20; \<strong>A Smart Room Discovery Platform\</strong>
-\</p>
+A Smart Room Discovery Platform
 
-\<p align="center">
-&#x20; Connecting Room Owners and Room Seekers through a simple, secure and user-friendly digital platform.
-\</p>
-
----
+Connecting Room Owners and Room Seekers through a simple, secure and user-friendly digital platform.
 
 ## 🌐 Live Project
 
